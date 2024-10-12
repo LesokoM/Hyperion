@@ -10,7 +10,6 @@ city_flight = {
     8 :["Polokowane", 1800]
     }
 
-
 def readable():{
     print("----------------------------------------------------------------------")
 }
@@ -26,7 +25,7 @@ def plane_cost(city_flight):
         print(f" {key}:City {value[0]}")
     readable()
     user_city = int(input("Please select which city you will be traveling to (ie 1,2 or 8): "))
-    
+
     return city_flight[user_city][1]*2
 
 def car_rental(rental_days):
@@ -41,7 +40,7 @@ def car_rental(rental_days):
 
 def holiday_cost(hotel_cost,plane_cost,car_rental):
     readable()
-    print(f"Your hotel stay costs R{hotel_cost}")
+    print(f"The total hotel stay costs R{hotel_cost}")
     print(f"The total cost of the flight is R{plane_cost}")
     print(f"The total cost to rent the car is R{car_rental}")
 
@@ -51,7 +50,7 @@ def holiday_cost(hotel_cost,plane_cost,car_rental):
     readable()
 
 
-
+readable()
 num_nights = int(input("How many nights will you be sleeping at the hotel?: "))
 
 rental_days = int(input("How many days do you want to rent the car?: "))
