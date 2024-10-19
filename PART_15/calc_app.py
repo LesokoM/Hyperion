@@ -24,14 +24,12 @@ def do_calculation(num1, num2, operation):
         print("Doing division...")
         try:
             print(f"{num1} ÷ {num2} = {num1 / num2}")
-        except:
+            write_to_file(f"{num1} ÷ {num2} = {num1 / num2 }")
+        except ZeroDivisionError:
             #if we try to do illegal division 
             print("This operation will not work. Please re-enter your values")
-            num1  = int(input("Please re-enter value 1: "))
-            num2  = int(input("Please re-enter value 2: "))
-            print(f"{num1} ÷ {num2} = {num1 / num2}")
-
-        write_to_file(f"{num1} ÷ {num2} = {num1 / num2 }")
+         
+        
 
 
     calc_menu() #calling out menu function again as we might want to redo the value
@@ -126,7 +124,7 @@ def calc_menu():
                 print_menu()
                 user_choice = int(input("Please select an option: "))
             else:
-                print("Correct option selected")
+             
                 user_entry = False 
 
         except ValueError: 
