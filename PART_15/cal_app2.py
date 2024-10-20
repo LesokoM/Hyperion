@@ -36,10 +36,32 @@ def menu_options():
             input_incomplete = False
 
     def menu_selection(option_chose):
+        #this function will look at the option chosen by the user and execute according to the selection 
+
+        if option_chose ==1:
+            print("Lets do a calculation")
+            
+        elif option_chose == 2:
+            print("Lets print all your previous equations")
+        elif option_chose== 3: 
+            print("Goodbye ")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     calc_menu = {
-        1: ["Do a calculation", user_input], #storing function by reference so that it doesnt run when i try to print the list 
+        1: ["Do a calculation"], #storing function by reference so that it doesnt run when i try to print the list 
         2: ["Print previous calculations"],
         3: ["Quit the app"]
     }
@@ -48,6 +70,7 @@ def menu_options():
         print(f"{key} {value[0]}")
 
     option_chose = int(input("Please select an option:"))
+    # ******ensure that only numbers 1,2,3 is chosen nothing else 
 
     menu_selection(option_chose)
 
