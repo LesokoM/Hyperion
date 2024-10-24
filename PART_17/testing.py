@@ -27,8 +27,7 @@ def validate_date():
             print("Invalid date entered please try again") #if numbers that are not correct date or incorrect format is entered except will deal with it 
 
 
-def vm():
-
+def va():
 
     task_contents = open("PART_17\\tasks.txt", "r")
 
@@ -55,5 +54,32 @@ def vm():
 
 
 
+def vm():
+    
+    input_username = input("Please enter username: ")
+    vm_task_contents = open("PART_17\\tasks.txt", "r")
 
+    vm_task_contents = vm_task_contents.read()
+    
+    vm_task_contents = vm_task_contents.strip() #removing spaces
+    vm_task_contents = vm_task_contents.replace("\n",",") #removing \n and replacing it with ,
+    vm_task_contents = vm_task_contents.split(",") #splitting it up based on , ]
+
+
+    my_tasks =[]
+    for i in range(0,len(vm_task_contents)):
+        if vm_task_contents[i] == input_username:
+            my_tasks.append(vm_task_contents[i:i+6])
+        
+ 
+
+    vm_headers  = PrettyTable(["User","Title", "Description", "Upload Date", "Due Date","Completion Status"], align= "c", max_width = 60)
+
+    print(my_tasks)
+
+    for i in my_tasks:
+
+        vm_headers.add_row([i[0],i[1],i[2],i[3],i[4],i[5]])
+
+    print(vm_headers)
 vm()

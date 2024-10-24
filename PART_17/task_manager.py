@@ -1,6 +1,6 @@
 #=====importing libraries===========
 from datetime import datetime
-
+from prettytable import PrettyTable
 '''This is the section where you will import libraries'''
 
 #====Login Section====
@@ -59,7 +59,7 @@ def login(database_usernames, database_passwords):
 
                 if input_password == database_passwords[index]: #if username/password pair is correct quit the login loop 
                     print("Correct username and password")
-                    menu()
+                    menu(input_username)
                 else:
                     number_of_tries-=1
                     print(f"Incorrect password. Number of tries left: {number_of_tries}")     
@@ -95,7 +95,7 @@ def validate_date():
 
  
 
-def menu():
+def menu(active_user):
 
     while True:
         # Present the menu to the user and 
@@ -145,7 +145,7 @@ def menu():
 
             write_to_file = open("PART_17\\user.txt", "a")
 
-            write_to_file.write(f"{new_username}, {new_password}\n")
+            write_to_file.write(f"{new_username}, {new_password}\n\n")
             write_to_file.close()
 
 
@@ -215,7 +215,7 @@ def menu():
             write_to_taskfile = open("PART_17\\tasks.txt", "a")
 
             #writing to file
-            write_to_taskfile.write(f"{database_usernames[task_to_which_user]}, {task_title}, {task_description}, {now_date}, {due_date}, No\n")
+            write_to_taskfile.write(f"{database_usernames[task_to_which_user]}, {task_title}, {task_description}, {now_date}, {due_date}, No\n\n")
             #closing file 
             write_to_taskfile.close()
            
@@ -229,11 +229,28 @@ def menu():
                 - Split that line where there is comma and space.
                 - Then print the results in the format shown in the Output 2 in the PDF
                 - It is much easier to read a file using a for loop.'''
-            
-
             task_contents = open("PART_17\\tasks.txt", "r")
 
             task_contents = task_contents.read()
+            
+            task_contents = task_contents.strip() #removing spaces
+            task_contents = task_contents.replace("\n",",") #removing \n and replacing it with ,
+            contents = task_contents.split(",") #splitting it up based on , 
+
+            
+            #idea to use prettytables to make it readeable https://www.geeksforgeeks.org/printing-lists-as-tabular-data-in-python/
+
+            print(len(contents))
+
+            #more formatting options idea from https://github.com/prettytable/prettytable/issues/130
+            headers  = PrettyTable(["User","Title", "Description", "Upload Date", "Due Date","Completion Status"], align= "c", max_width = 60)
+            
+            for i in range(0,len(contents),6):
+                print(i)
+                headers.add_row([contents[i],contents[i+1],contents[i+2],contents[i+3],contents[i+4],contents[i+5]])
+                headers.add_row(['','','','','','']) #space after each entry 
+            print(headers)
+
 
 
 
@@ -252,6 +269,36 @@ def menu():
                 username you have read from the file.
                 - If they are the same you print the task in the format of Output 2
                 shown in the PDF '''
+           
+            vm_task_contents = open("PART_17\\tasks.txt", "r")
+
+            vm_task_contents = vm_task_contents.read()
+            
+            vm_task_contents = vm_task_contents.strip() #removing spaces
+            vm_task_contents = vm_task_contents.replace("\n",",") #removing \n and replacing it with ,
+            vm_task_contents = vm_task_contents.split(",") #splitting it up based on , ]
+            
+
+            my_tasks =[]
+            for i in range(0,len(vm_task_contents)):
+                if vm_task_contents[i] == active_user:
+                    my_tasks.append(vm_task_contents[i:i+6])
+                
+            vm_task_contents.close()
+
+            vm_headers  = PrettyTable(["User","Title", "Description", "Upload Date", "Due Date","Completion Status"], align= "c", max_width = 60)
+
+            print(my_tasks)
+
+            for i in my_tasks:
+
+                vm_headers.add_row([i[0],i[1],i[2],i[3],i[4],i[5]])
+
+            print(vm_headers)
+
+                    
+            
+
 
         elif menu == 'e':
             print('Goodbye!!!')
