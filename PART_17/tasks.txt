@@ -1,2 +1,3 @@
 admin, Register Users with task_manager.py, Use task_manager.py to add the usernames and passwords for all team members that will be using this program., 10 Oct 2019, 20 Oct 2019, No
-admin, Assign initial tasks, Use task_manager.py to assign each team member with appropriate tasks, 10 Oct 2019, 25 Oct 2019, No2, Remove , remvoe all dogs from cats, 23/Oct/2024, 12 December 2025, No
+admin, Assign initial tasks, Use task_manager.py to assign each team member with appropriate tasks, 10 Oct 2019, 25 Oct 2019, No
+admin2, remove blocks, remove blocks from warehouse, 23 Oct 2024, 12 September 2025, No

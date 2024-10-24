@@ -22,7 +22,7 @@ def find_usernames_and_passwords():
         print(line)
         line = line.replace(" ", "").strip() # getting line in workable format
         print(line)
-        for i in range(0, len(line)): 
+        for i in range(0, len(line)):
             if line[i] == ",":
 
                 usernames.append(line[:i])
@@ -154,7 +154,7 @@ def menu():
 
 
         elif menu == 'a':
-            
+            #saving todays day in variable 
             current_date = datetime.today()
             pass
             '''This code block will allow a user to add a new task to task.txt file
@@ -167,59 +167,58 @@ def menu():
                 - Then, get the current date.
                 - Add the data to the file task.txt
                 - Remember to include 'No' to indicate that the task is not complete.'''
-
+            #creating option menu for available usernames to assign task 
             for i in range(0, len(database_usernames)):
                 print(f"{i+1}: {database_usernames[i]}")
 
             while True:
                 try:
+                    #asking which username user wants to chose
                     task_to_which_user  = int(input("Please select which user to assign the task to: "))
+                    #ensuring they choose a value that is actually listed
                     if task_to_which_user > len(database_usernames) or task_to_which_user <= 0:
                         print("You have selected a number not on the list. Please try again")
                     else: 
-                        task_to_which_user-=1
+                        task_to_which_user-=1#getting the index number
                       
                         break
-                except ValueError:
+                except ValueError:#if user enters something that is not a number catch the error
                     print("You have not selected a number. Please try again")
-
+            #displaying which user was selected
             print(f"You have selected {database_usernames[task_to_which_user]} ")
 
             while True: 
                 try:
+                    #getting title and desciption 
                     task_title = input("Please enter task title: ")
                     task_description = input("Please enter a short description of the task: ")
 
+                        #making sure title and description arent too long or short
                     if len(task_description) <10:
                         print("The description is too short. Please try again.")
                     elif len(task_description) > 60 or len(task_title) > 15:
                         print("The description or title is too long. Please try again.") 
                     else:
                         break
-
+                        #catching any errors if they only put int values
                 except ValueError:
                     print("You have not entered an adequate description")
 
+            #using separate function to get date (make sure its correct)
             due_date = validate_date()
 
             print(f"Due date is {due_date}")
             
-            now_date  = f"{current_date.day}/{current_date.strftime('%b')}/{current_date.year}"
-            print(now_date)
-
+            now_date  = f"{current_date.day} {current_date.strftime('%b')} {current_date.year}" #reforamtting current time so it follows the instructed format. using %b to get month in words
+            
+            #opening file
             write_to_taskfile = open("PART_17\\tasks.txt", "a")
 
-            print(f"{task_to_which_user}, {task_title}, {task_description}, {now_date}, {due_date}, No\n")
-            
-            write_to_taskfile.write(f"{task_to_which_user}, {task_title}, {task_description}, {now_date}, {due_date}, No\n")
-            
+            #writing to file
+            write_to_taskfile.write(f"{database_usernames[task_to_which_user]}, {task_title}, {task_description}, {now_date}, {due_date}, No\n")
+            #closing file 
             write_to_taskfile.close()
            
-           
-         
-
-
-
 
         elif menu == 'va':
             pass
@@ -230,6 +229,17 @@ def menu():
                 - Split that line where there is comma and space.
                 - Then print the results in the format shown in the Output 2 in the PDF
                 - It is much easier to read a file using a for loop.'''
+            
+
+            task_contents = open("PART_17\\tasks.txt", "r")
+
+            task_contents = task_contents.read()
+
+
+
+
+
+
 
         elif menu == 'vm':
             pass
