@@ -145,7 +145,7 @@ def menu(active_user):
 
             write_to_file = open("PART_17\\user.txt", "a")
 
-            write_to_file.write(f"{new_username}, {new_password}\n\n")
+            write_to_file.write(f"{new_username}, {new_password}\n")
             write_to_file.close()
 
 
@@ -215,7 +215,7 @@ def menu(active_user):
             write_to_taskfile = open("PART_17\\tasks.txt", "a")
 
             #writing to file
-            write_to_taskfile.write(f"{database_usernames[task_to_which_user]}, {task_title}, {task_description}, {now_date}, {due_date}, No\n\n")
+            write_to_taskfile.write(f"{database_usernames[task_to_which_user]}, {task_title}, {task_description}, {now_date}, {due_date}, No\n")
             #closing file 
             write_to_taskfile.close()
            
@@ -284,7 +284,7 @@ def menu(active_user):
                 if vm_task_contents[i] == active_user:
                     my_tasks.append(vm_task_contents[i:i+6])
                 
-            vm_task_contents.close()
+       
 
             vm_headers  = PrettyTable(["User","Title", "Description", "Upload Date", "Due Date","Completion Status"], align= "c", max_width = 60)
 
