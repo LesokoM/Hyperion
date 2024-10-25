@@ -82,4 +82,23 @@ def vm():
         vm_headers.add_row([i[0],i[1],i[2],i[3],i[4],i[5]])
 
     print(vm_headers)
-vm()
+
+
+
+def admin_stats():
+
+    with open("PART_17\\tasks.txt", "r") as task_stat: 
+        lines = len(task_stat.readlines())
+
+
+    with open("PART_17\\user.txt", "r") as user_stat: 
+        lines2 = len(user_stat.readlines())
+
+
+    headers = PrettyTable(["Total tasks", "Total users"])
+
+    headers.add_row([lines,lines2])
+
+    print(headers)
+
+admin_stats()

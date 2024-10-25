@@ -1,8 +1,0 @@
-admin, adm1n
-admin2, adm1n2
-admin3, adm1n3
-john , Joe@2
-horis, bob
-
-new-user, user1
-

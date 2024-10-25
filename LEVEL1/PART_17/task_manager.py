@@ -19,9 +19,9 @@ def find_usernames_and_passwords():
     #creating usable copies of my code
     for line in user_login_details:
         #removing white space and removing \n character
-        print(line)
+   
         line = line.replace(" ", "").strip() # getting line in workable format
-        print(line)
+
         for i in range(0, len(line)):
             if line[i] == ",":
 
@@ -89,11 +89,25 @@ def validate_date():
         except ValueError: 
             print("Invalid date entered please try again") #if numbers that are not correct date or incorrect format is entered except will deal with it 
 
+def admin_stats():
+
+
+    with open("PART_17\\tasks.txt", "r") as task_stat: 
+        lines = len(task_stat.readlines())
+
+
+    with open("PART_17\\user.txt", "r") as user_stat: 
+        lines2 = len(user_stat.readlines())
+
+
+    headers = PrettyTable(["Total tasks", "Total users"])
+
+    headers.add_row([lines,lines2])
+
+    print(headers)
 
 
 
-
- 
 
 def menu(active_user):
 
@@ -105,48 +119,65 @@ def menu(active_user):
     a - add task
     va - view all tasks
     vm - view my tasks
+    s - view user and task statistics
     e - exit
     : ''').lower()
 
-        if menu == 'r':
-            pass
-            '''This code block will add a new user to the user.txt file
-            - You can use the following steps:
-                - Request input of a new username
-                - Request input of a new password
-                - Request input of password confirmation.
-                - Check if the new password and confirmed password are the same
-                - If they are the same, add them to the user.txt file,
-                otherwise present a relevant message'''
-            while True:
-                new_username = input("Please enter a new username: ")
 
-                if new_username not in database_usernames:
-                    #checking that the username is not already in use 
-                    while True:
-                        new_password = input("Please enter a new password: ")
-                        temp_password  = input("Please confirm the password: ")
-                        #creating a password and the comparison password 
-                        if new_password == temp_password:
-                            print("Creating new username....")
-                            break 
-                            #if passowrd and username is correct we can now move on to adding them to the file 
-                        else: 
-                            print("Passwords do not match!")
-                            #telling user that passwords dont match and prompting them to re-enter them 
+        if menu == "s":
+            if active_user == "admin":
 
-                    print(f"Your new username is {new_username} and new password is {new_password}") #displaying new logins to users
-                    break   
-                    
-                else:
-                    print("That username is already taken. Please enter a different one.")
-                    #if username already made user prompted to enter a different one 
+                admin_stats()
+            else: 
+                print("Only admins are allowed to view stats")
 
 
-            write_to_file = open("PART_17\\user.txt", "a")
+        elif menu == 'r':
 
-            write_to_file.write(f"{new_username}, {new_password}\n")
-            write_to_file.close()
+            if active_user == "admin":
+                pass
+                '''This code block will add a new user to the user.txt file
+                - You can use the following steps:
+                    - Request input of a new username
+                    - Request input of a new password
+                    - Request input of password confirmation.
+                    - Check if the new password and confirmed password are the same
+                    - If they are the same, add them to the user.txt file,
+                    otherwise present a relevant message'''
+                while True:
+                    new_username = input("Please enter a new username: ")
+
+                    if new_username not in database_usernames:
+                        #checking that the username is not already in use 
+                        while True:
+                            new_password = input("Please enter a new password: ")
+                            temp_password  = input("Please confirm the password: ")
+                            #creating a password and the comparison password 
+                            if new_password == temp_password:
+                                print("Creating new username....")
+                                break 
+                                #if passowrd and username is correct we can now move on to adding them to the file 
+                            else: 
+                                print("Passwords do not match!")
+                                #telling user that passwords dont match and prompting them to re-enter them 
+
+                        print(f"Your new username is {new_username} and new password is {new_password}") #displaying new logins to users
+                        database_usernames.append(new_username)
+                        database_passwords.append(new_password)
+                        break   
+                        
+                    else:
+                        print("That username is already taken. Please enter a different one.")
+                        #if username already made user prompted to enter a different one 
+
+
+                write_to_file = open("PART_17\\user.txt", "a")
+
+                write_to_file.write(f"{new_username}, {new_password}")
+                write_to_file.close()
+
+            else: 
+                print("Only admins are allowed to register users")
 
 
 
@@ -196,7 +227,7 @@ def menu(active_user):
                         #making sure title and description arent too long or short
                     if len(task_description) <10:
                         print("The description is too short. Please try again.")
-                    elif len(task_description) > 60 or len(task_title) > 15:
+                    elif len(task_description) > 80 or len(task_title) > 28:
                         print("The description or title is too long. Please try again.") 
                     else:
                         break
@@ -236,17 +267,18 @@ def menu(active_user):
             task_contents = task_contents.strip() #removing spaces
             task_contents = task_contents.replace("\n",",") #removing \n and replacing it with ,
             contents = task_contents.split(",") #splitting it up based on , 
-
+            
+            
             
             #idea to use prettytables to make it readeable https://www.geeksforgeeks.org/printing-lists-as-tabular-data-in-python/
 
             print(len(contents))
 
             #more formatting options idea from https://github.com/prettytable/prettytable/issues/130
-            headers  = PrettyTable(["User","Title", "Description", "Upload Date", "Due Date","Completion Status"], align= "c", max_width = 60)
+            headers  = PrettyTable(["User","Title", "Description", "Upload Date", "Due Date","Completion Status"], align= "c", max_width = 30)
             
             for i in range(0,len(contents),6):
-                print(i)
+            
                 headers.add_row([contents[i],contents[i+1],contents[i+2],contents[i+3],contents[i+4],contents[i+5]])
                 headers.add_row(['','','','','','']) #space after each entry 
             print(headers)
@@ -269,11 +301,13 @@ def menu(active_user):
                 username you have read from the file.
                 - If they are the same you print the task in the format of Output 2
                 shown in the PDF '''
+
            
             vm_task_contents = open("PART_17\\tasks.txt", "r")
 
             vm_task_contents = vm_task_contents.read()
             
+   
             vm_task_contents = vm_task_contents.strip() #removing spaces
             vm_task_contents = vm_task_contents.replace("\n",",") #removing \n and replacing it with ,
             vm_task_contents = vm_task_contents.split(",") #splitting it up based on , ]
@@ -286,9 +320,7 @@ def menu(active_user):
                 
        
 
-            vm_headers  = PrettyTable(["User","Title", "Description", "Upload Date", "Due Date","Completion Status"], align= "c", max_width = 60)
-
-            print(my_tasks)
+            vm_headers  = PrettyTable(["User","Title", "Description", "Upload Date", "Due Date","Completion Status"], align= "c", max_width = 30)
 
             for i in my_tasks:
 
@@ -297,7 +329,7 @@ def menu(active_user):
             print(vm_headers)
 
                     
-            
+           
 
 
         elif menu == 'e':
