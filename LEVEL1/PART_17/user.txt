@@ -1,1 +1,4 @@
 admin, adm1n
+robert, rob@123
+john, doe
+manaka, man2

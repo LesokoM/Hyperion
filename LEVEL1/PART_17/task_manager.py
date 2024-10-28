@@ -10,9 +10,10 @@ from prettytable import PrettyTable
     - Use a while loop to validate your user name and password
 '''
 
+
 def find_usernames_and_passwords():
      
-    user_login_details = open("PART_17\\user.txt", "r")
+    user_login_details = open("LEVEL1\\PART_17\\user.txt", "r")
     usernames = []
     passwords = []
 
@@ -92,11 +93,11 @@ def validate_date():
 def admin_stats():
 
 
-    with open("PART_17\\tasks.txt", "r") as task_stat: 
+    with open("LEVEL1\\PART_17\\tasks.txt", "r") as task_stat: 
         lines = len(task_stat.readlines())
 
 
-    with open("PART_17\\user.txt", "r") as user_stat: 
+    with open("LEVEL1\\PART_17\\user.txt", "r") as user_stat: 
         lines2 = len(user_stat.readlines())
 
 
@@ -171,9 +172,9 @@ def menu(active_user):
                         #if username already made user prompted to enter a different one 
 
 
-                write_to_file = open("PART_17\\user.txt", "a")
+                write_to_file = open("LEVEL1\\PART_17\\user.txt", "a")
 
-                write_to_file.write(f"{new_username}, {new_password}")
+                write_to_file.write(f"{new_username}, {new_password}\n")
                 write_to_file.close()
 
             else: 
@@ -243,7 +244,7 @@ def menu(active_user):
             now_date  = f"{current_date.day} {current_date.strftime('%b')} {current_date.year}" #reforamtting current time so it follows the instructed format. using %b to get month in words
             
             #opening file
-            write_to_taskfile = open("PART_17\\tasks.txt", "a")
+            write_to_taskfile = open("LEVEL1\\PART_17\\tasks.txt", "a")
 
             #writing to file
             write_to_taskfile.write(f"{database_usernames[task_to_which_user]}, {task_title}, {task_description}, {now_date}, {due_date}, No\n")
@@ -260,7 +261,7 @@ def menu(active_user):
                 - Split that line where there is comma and space.
                 - Then print the results in the format shown in the Output 2 in the PDF
                 - It is much easier to read a file using a for loop.'''
-            task_contents = open("PART_17\\tasks.txt", "r")
+            task_contents = open("LEVEL1\\PART_17\\tasks.txt", "r")
 
             task_contents = task_contents.read()
             
@@ -303,7 +304,7 @@ def menu(active_user):
                 shown in the PDF '''
 
            
-            vm_task_contents = open("PART_17\\tasks.txt", "r")
+            vm_task_contents = open("LEVEL1\\PART_17\\tasks.txt", "r")
 
             vm_task_contents = vm_task_contents.read()
             
