@@ -28,23 +28,26 @@ class Course:
         print("Please contact us by visiting", self.contact_website)
 
     def head_office_location(self):
-        print("Head office location: Cape Town")
+        print("Head office location: Cape Town")#creating head office location
 
 class OOPCourse(Course):
     def __init__(self):
+        #assigning default values
         self.description = "OOP Fundamentals"
         self.trainer = "Mr Anon A. Mouse"
 
     def trainer_details(self):
+        #printing trainer info
         print(f"Course: {self.description}")
         print(f"Trainer: {self.trainer}")
 
     def show_course_id(self):
+        #getting the course ID
         course_id = 12345
         print(f"Course ID: {course_id}")
 
 course_1 = OOPCourse()
-
+#calling class functions
 course_1.contact_details()
 course_1.trainer_details()
 course_1.show_course_id()
