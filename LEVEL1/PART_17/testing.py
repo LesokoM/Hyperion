@@ -1,4 +1,4 @@
 file = open("file.txt", "a")
-file.write("This line will be appended.\n")
-file.write("So will this one.\n")
+file.write("\nThis line will be appended.")
+file.write("\nSo will this one.")
 file.close()

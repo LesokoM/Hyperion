@@ -33,10 +33,7 @@ class Email:
         #for that specifc object self is pointing to; chnaging the status of that email 
         self.has_been_read = True        
 
-
 #now theyre called functions not instances 
-
-
 
 def populate_inbox():
     
@@ -58,13 +55,11 @@ def populate_inbox():
     new_email = Email(email_address, subject_line, email_content)
     inbox.append(new_email)
 
-
 def list_emails():
     #list emails using index method
     for email in inbox: 
+        
         print(f"{inbox.index(email)} {email}")
-    
-   
 
 def read_email(i):
     selected_email = inbox[i]
@@ -75,7 +70,6 @@ def read_email(i):
     print("--------------------------------")
 
     selected_email.mark_as_read()
-
 
 def menu():
     populate_inbox()
@@ -98,24 +92,14 @@ def menu():
                 if mail.has_been_read == False: #accessing class variable using dot notation only prining emails that are unread 
                     print(f">> {inbox.index(mail)} {mail}") 
 
-
         elif menu_option ==3:
             print("Goodbye...")
             exit()
         else:
             print("Incorrect menu chosen")
 
-
-
-
-
 inbox = [] #inbox will hold email objects should be outside
 program_startup = False
 
 menu()
-
-
-
-
-
 

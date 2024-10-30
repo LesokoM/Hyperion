@@ -1,9 +1,9 @@
 admin, Register Users with task_manager.py, Use task_manager.py to add the usernames and passwords for all team members that will be using this program., 10 Oct 2019, 20 Oct 2019, No
 admin, Assign initial tasks, Use task_manager.py to assign each team member with appropriate tasks, 10 Oct 2019, 25 Oct 2019, No
-robert, remove valuables, remove all valuables from aisle 20 , 28 Oct 2024, 12 June 2025, No
-admin, Hire new  temp , Hire new temp for dog-bites, 28 Oct 2024, 12 June 2025, No
-robert, remove posters, remove all posters from shop window, 28 Oct 2024, 12 March 2025, No
-robert, close up store, at 12:00pm on Tuesday close store, 28 Oct 2024, 01 January 2025, No
-john, go thorugh training, go through stock taking training, 28 Oct 2024, 12 February 2025, No
-john, greet everyone at the door, when a customer comes in greet them , 28 Oct 2024, 12 January 2025, No
-admin, request for access, all non-admins to have access to stats, 28 Oct 2024, 12 January 2025, No
+admin, remove, remove remove remove, 28 Oct 2024, 12 February 2025, No
+please,workwork, please please, please please please, 28 Oct 2024, 12 February 2025, No
+
+admin, gfnotnh, gmrenioenioethnonhoth, 28 Oct 2024, 12 February 2025, No
+joe, frgniorngj, gerogneriojgoiengioenhoenhoenhonheo, 28 Oct 2024, 11 December 2025, No
+admin, yep uep , yeonfiohr jiufhow, 28 Oct 2024, 12 June 2025, No
+admin, remove, remove all tasks, 28 Oct 2024, 12 May 2025, No
