@@ -1,20 +1,16 @@
 class Email:
-
     has_been_read = False #setting has been read to false
-
     def __init__(self, email_address, subject_line, email_content):
         self.email_address = email_address
         self.subject_line = subject_line
         self.email_content = email_content
         #creating objects 
-      
     def __repr__(self):
         #whenever i  want to print my object it will give me the subject line
-    
         subject_list =self.subject_line
         subject_list.split(",")
         return  subject_list
-    
+
     def get_email_address(self):
         #fetch email adress
         return self.email_address
@@ -26,17 +22,14 @@ class Email:
     def get_content(self):
         #fetch content 
         return self.email_content
-
-    def mark_as_read(self): 
         
+    def mark_as_read(self): 
         #we put self in as a parameter because it will change the been reade
         #for that specifc object self is pointing to; chnaging the status of that email 
         self.has_been_read = True        
 
 #now theyre called functions not instances 
-
 def populate_inbox():
-    
     global program_startup
     if program_startup == False:
             #creating the first 3 emails to go inside inbox 
@@ -54,13 +47,10 @@ def populate_inbox():
     email_content = input("Please enter email content: ")
     new_email = Email(email_address, subject_line, email_content)
     inbox.append(new_email)
-
 def list_emails():
     #list emails using index method
     for email in inbox: 
-        
         print(f"{inbox.index(email)} {email}")
-
 def read_email(i):
     selected_email = inbox[i]
     print("--------------------------------")
@@ -68,38 +58,30 @@ def read_email(i):
     print(f"Subject: {selected_email.get_subject_line()}")
     print(f"Content: {selected_email.get_content()}")
     print("--------------------------------")
-
     selected_email.mark_as_read()
-
 def menu():
     populate_inbox()
     while True: #as long as we dont exit function leave everything to run as normal 
-
         menu_option = int(input('''
     Please select an option: 
         1. Read an email 
         2. View Unread emails
         3. Quit Application
         >>'''))
-
         if menu_option == 1:
             list_emails()
             index = int(input("Please enter position you want to read: "))
             read_email(index)
-
         elif menu_option == 2:
             for mail in inbox:
                 if mail.has_been_read == False: #accessing class variable using dot notation only prining emails that are unread 
                     print(f">> {inbox.index(mail)} {mail}") 
-
         elif menu_option ==3:
             print("Goodbye...")
             exit()
         else:
             print("Incorrect menu chosen")
-
 inbox = [] #inbox will hold email objects should be outside
 program_startup = False
-
 menu()
 

@@ -1,3 +1,0 @@
-
-This line will be appended.
-So will this one.
