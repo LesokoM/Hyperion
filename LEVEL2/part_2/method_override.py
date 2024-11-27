@@ -21,12 +21,14 @@ name,age,hair_colour,eye_colour = input('''Please enter the below information se
         age
         hair colour
         eye colour  
-        >>> ''').replace(" ", "").split(",")#removing any spaces and seperating input with commas
+        >>> ''').split(",")#removing any spaces and seperating input with commas
+
+age = int(age)
 
 if age >=18: 
-    me = Adult(name, age, hair_colour,eye_colour)#creating adult if they can drive
+    me = Adult(name, age,eye_colour,hair_colour)#creating adult if they can drive
 else: 
-    me = Child(name, age, hair_colour,eye_colour) #creating child if cant drive 
+    me = Child(name, age,eye_colour,hair_colour) #creating child if cant drive 
 
 me.can_drive() #prining driving status
 
