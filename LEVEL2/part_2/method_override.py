@@ -9,7 +9,7 @@ class Adult():
 
     def can_drive(self):
        
-         print(f"{self.name} can drive")  #setting can drive to print 
+        print(f"{self.name} can drive")  #setting can drive to print 
        
 class Child(Adult):
 
@@ -25,7 +25,7 @@ name,age,hair_colour,eye_colour = input('''Please enter the below information se
 
 age = int(age)
 
-if age >=18: 
+if age >= 18: 
     me = Adult(name, age,eye_colour,hair_colour)#creating adult if they can drive
 else: 
     me = Child(name, age,eye_colour,hair_colour) #creating child if cant drive 

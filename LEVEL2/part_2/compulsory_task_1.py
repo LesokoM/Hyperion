@@ -31,10 +31,10 @@ class Course:
         print("Head office location: Cape Town")#creating head office location
 
 class OOPCourse(Course):
-    def __init__(self):
+    def __init__(self, description ="OOP Fundamentals", trainer = "Mr Anon A. Mouse" ):
         #assigning default values
-        self.description = "OOP Fundamentals"
-        self.trainer = "Mr Anon A. Mouse"
+        self.description =description
+        self.trainer = trainer
 
     def trainer_details(self):
         #printing trainer info
