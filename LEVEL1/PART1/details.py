@@ -13,4 +13,8 @@ house_num = input("What is your house number? ")
 street_name = input("What is your street name? ")
 
 
-print(f"This is {name}. She is {age} years old and lives at house number {house_num} on {street_name}")
+print(f'''
+      This is {name}. 
+      She is {age} years old 
+      {name} lives at house number {house_num} on {street_name}
+    ''')

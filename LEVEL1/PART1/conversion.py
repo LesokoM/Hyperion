@@ -13,6 +13,14 @@ num2 = float(num2)
 num3 = str(num3)
 string1 = int(string1)
 #printing variables
+
+print(f'''
+    Number 1: {num1}
+    Number 2: {num2}
+    Number 3: {num3}
+    ----------------
+    String 1: {string1}
+''')
 print(num1)
 print(num2)
 print(num3)
