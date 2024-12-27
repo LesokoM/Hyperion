@@ -21,7 +21,4 @@ print(f'''
     ----------------
     String 1: {string1}
 ''')
-print(num1)
-print(num2)
-print(num3)
-print(string1)
+
