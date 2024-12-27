@@ -8,7 +8,7 @@ print out Hello World on new line
 
 
 '''
-
+# Asking for user input and printing out input
 user_name = input("What is your name? ")
 print(user_name)
 user_age = input("What is your age? ")
