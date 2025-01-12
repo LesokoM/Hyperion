@@ -8,10 +8,12 @@ print out Hello World on new line
 
 
 '''
-#asking for user input and printing input
-user_name = input("What is your name? ")
 
+# Asking for user input and printing out input
+
+user_name = input("What is your name? ")
 user_age = input("What is your age? ")
 
+# Printing user information
 
 print(f"Hello {user_name}! You are {user_age} years old.")
