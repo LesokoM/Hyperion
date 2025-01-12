@@ -1,0 +1,38 @@
+1.1
+The waterfall model. Anti-braking lock braking system requires planning. 
+Desingers have to understand why a car would break, have all the possible cases
+laid out and adress each issue. Careful and meticulous planning has to be done
+before the system is implemented and each case would have to be tested to ensure 
+the system works. The system cannot partially work when integration is done all \
+requirements have to be meticulous
+
+1.2
+Incremental development. The VR system is designed to assist in software mainteance 
+which is an interative process and on going. The incremental development process is perfect 
+because it allows for certain issues to be addressed at any time and for them to be revised 
+at a later stage. The version functionality of this development process makes it easier 
+to make tweaks then relaunch and wait for feedback from users
+
+1.3
+Re-use orientated software would be best for the accounting system as the initial software still 
+exist developers can use the exisiting skeleton then add any necessary changes or upgrades required. 
+This is also the best option as the data wont have to be migrated to a whole new system which will save
+time and stop any issues that could arise from the data migration 
+
+1.4 
+Reuse orientated software model would be best here. Travel planning systems already exist , the wheel is not being
+re-invested here. Booking.com, AirBnB and Trip.com use travel planning systems already for flights, accommodation and train trips
+the only difference in this system is the emphasis on 'low environmental impact' which means the criteria that would need to be assessed
+is travel time(more flying = more fuel used), type of plane used (bigger the plane= more carbon emissions) and alternative transport options (if 
+train can be used instead of plane then system will suggest that route). Small tweaks can be made to the existing software
+
+1.5
+Because its the model that emphasises user feedback. Developers can code all they want but what theyre creating has to be usable and useful to the user. 
+Developers cannot think like the users do and sometimes developers will not see the gap in usability because theyve been working on the problem for so long.
+interatively improving the system based on user feedback and watching how the current version addresses users needs creates a superion system that actually contributes to the business
+or person 
+
+1.6
+In the first step you're just figuring out what you need overall and have very little knowledge in what solutions or components currently exist while
+in the second requirments step you've already done research and better understood the new platform, old platform and the components that exist and dont exist which means
+your requirements change. If you do not re-look and update the requirments developers might find themselves recoding something they could have just bought, plugged and played with 
