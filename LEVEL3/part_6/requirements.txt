@@ -1,0 +1,23 @@
+1.1
+- When the user selects the destinations they should be presented with different 
+train times and dates the user should be allowed to choose which date and what time they will 
+ride.
+
+- System should request a return ticket before getting to payment section 
+so transaction can be done at once 
+
+- How should the design of the ticeket that is issued look like? What type of information should be displayed 
+based on the user input 
+
+1.2 
+- system should be available via an app as well as on the web 
+- system should follow current UI that is already in place for train bookings ie Trip.com app 
+to make it easier for the user to apply past expierence
+- When searching for a destination a long list shouldnt be given but system should 
+allow the user to begin typing thier destination then system can provide suggestions 
+- system should not be slow to load and shouldnt have too much content other than what is necessary 
+- when entering credit card information proper measures have to be taken to protect the users card information
+this applies to the identifier information as well 
+
+
+

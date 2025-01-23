@@ -1,0 +1,50 @@
+1.1 
+Mobile game app
+-Portability games cant be to big so that their unplayable or too big for 
+the laptop (static metric)
+-Reliability games that crash are not fun to play. Developers need to enusre their
+games are bug free to ensure smooth playing (dynamic metric)
+
+
+1.2 
+Banking application 
+Security/Reliability - banking apps hold very sensitive information like card number, ID number or home address
+this informatio needs to be protected from any form of cyeberattack (static and dynamic)
+
+Usability - developers need to make the UX design of the application easy for user to navigate. 
+Making a simple payment should not be hidden behind numerous features (dynamic and static)
+
+1.3 
+Medical organisation database 
+Learnability - the developers are creating something nurses and doctors will be needing. It should not be a complex
+software to use and should be repeatable(as each patient is requested to submit the same information). Data should also be \
+easily retrievable as emergency situations might require faster retrieval times (dynamic metric)
+
+Security - just like the banking app, patient information is protected by law and needs to be secure. Developers 
+should ensure there is strict authorisation and access control (static metric)
+
+2 
+High quality software process require continous testing and evaluation against the product requirements. 
+Because developers and QM team is constantly checking if the product does what its suppsoed to do and well it 
+keeps developers accountable through the entire design process and doesnt leave major design changes to the end but 
+ensures at each step improvements are made. However the problem with this is that it is slow and rigid. Developers 
+cannot push code quickly as there is a constant back and forth. This delay means creating the product takes longer and is more 
+costly. This system also runs the risk of missing project deadlines 
+
+3
+They're quick and can be done more often meaning errors can be picked up without wasting countless hours. 
+They allow for different people to look at the code which could increase its efficiency. Because its not so structured
+it allows for agile product development meaning  rapid development and improvement at each iteration. 
+
+
+4.
+Inspections solve common errors or general problems. Most likely they will pick up on issues that directly affect the feature/software 
+requirments. So if the code does not do what its supposed to do but problems such as handling user input error can be missed as this something 
+developers will pick up during feedback cycle and prehaps export or display problems on certain devices
+
+5. 
+
+Because external quality attributes tend to be more qualitative in nature making it hard to rigidly define if that attribute is being met or not.
+User perception can often change how a external attribute is seen and this can make figuring out which internal attribute is affecting it difficult.
+What also can make it difficult is that software cannot have it all ie be 100% robust and agile at the same time and these two external attributes can be
+closely linked to a single interal attribute  

@@ -1,0 +1,30 @@
+Do you think the website has a good UI? Refer to the
+information provided in the task and discuss both good and bad elements
+in the website’s UI.
+
+1.1 
+Bad elements: 
+- When searching there is no drop down to assist the user
+- The background is a very distracting colour 
+
+- The company name and slogan is written in font and colour that is not easy to read 
+- The moving logo id a distraction 
+- Not easily navigatable because there is no formal structure or subheadingss
+
+Good elements: 
+- Font used is a good colour and easy to read
+- There is a search bar to assist the user in finding what they need 
+- When clicking on a product enough information is provided for user to make informed decision
+- Pictures are clear and well placed ensuring the consumer knows what theyre purchasing 
+
+
+1.2 
+Bad elements: 
+- Menu font is a small 
+- There is no search bar to assist the user in find recipes 
+
+Good elements: 
+- Well structured and organised eveything is grouped togther based on relevance
+- Good use of icons  ie shopping cart to view selected items, help button for assistance, 
+3 lines to represent the menu options (when window size is small)
+
