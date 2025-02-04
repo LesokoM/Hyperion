@@ -2,3 +2,17 @@
     -(maybe get a seperate function that will evaluate this) does the month even exist 
     -if amount is put in with comma or with a minus or with a R or some sort of symbol 
 
+2. add the close for db 
+
+3. Category - 
+    savings
+    groceries
+    utilites 
+    health 
+    insurance 
+    transportation 
+    clothing
+    cellphone and internet 
+    petrol/diesel 
+    housing
+    

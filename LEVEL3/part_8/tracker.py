@@ -14,23 +14,40 @@ class menuSelection():
                 
                 print("CREATING DATABASE...")
                 
+                self.category_list = ["Savings", "Groceries","Utilites","Health","Insurance","Transportation","Clothing","Cellphone and Internet" , "Petrol/Diesel","Housing", "Main Job", "Side Hustle"]
+
                 
                 self.db =sqlite3.connect('budgettracker.db') #links us to the database
                 self.cursor = self.db.cursor() #creates a cursor linked to the database 
 
                 self.cursor.execute('''
                             CREATE TABLE IF NOT EXISTS budgettracker(
-                            
+                            id INTEGER PRIMARY KEY,
                             Date DATE,
                             Description TEXT,
                             Type TEXT,
+                            Category TEXT,
                             Amount INT,
                             Comments TEXT)
                             ''') #creating database 
 
                 self.db.commit()
-
-                self.menu_selection()qs
+                
+                
+                #dummy_entries = [ ("2024-06-24", "Insurance", "Expense", "Insurance", -3000, "No"),
+                #                 ("2024-04-24", "Petrol", "Expense", "Petrol/Diesel", -500, "No"),
+                #                ("2024-01-13", "MediCare", "Expense", "Health", -2000, "No"),
+                #                ("2024-02-16", "Salary", "Income", "Main Job", 14000, "From main job in Sandton"),
+                #                ]
+             
+                #self.cursor.executemany('''
+                 #                   INSERT OR IGNORE INTO budgettracker(Date,Description,Type,Category,Amount,Comments)
+                  #                  VALUES(?,?,?,?,?,?)
+                  #                   ''', dummy_entries)
+                
+               #self.db.commit()
+          
+                self.menu_selection()
 
         
 
@@ -85,7 +102,7 @@ class menuSelection():
     def create_table(self, rows):
         #creating neater output. Need to create it so that it works everytime when displaying the db too 
         print("creating table.....")
-        headers = ["Date", "Desciption", "Type", "Amount(R)", "Comments"]
+        headers = ["Date", "Desciption", "Type", "Category", "Amount(R)", "Comments"]
 
         table = tabulate(zip(headers,rows), headers= ["Information", "Your Input"], tablefmt = "fancy_grid")
         print(table)
@@ -94,6 +111,7 @@ class menuSelection():
     def create_table_with_own_headers(self,headers, rows):
     #neater output 
         print("creating table with your headers.....")
+        print(rows)
         table = tabulate(rows, headers= headers, tablefmt = "fancy_grid")
         print(table)
 
@@ -107,13 +125,32 @@ class menuSelection():
 
             temp_type = 'Expense'
 
+            while True:
+                for index, value in enumerate(self.category_list, start=1):
+                    print(f"{index}. {value}")
+
+                try: 
+                    category_selection = int(input("Please select a category ie 3: "))
+
+                    if(category_selection > len(self.category_list)) or category_selection < 1:
+                        print("Incorrect category selection please try again")
+                    else:
+                        break 
+
+                except ValueError:
+                    print("You have chosen the incorrect option")
+
+
+
+
+
             temp_amount = float(input('''How much was spent ie R120.05? >> -R'''))*-1
             
             temp_comments = input('''Please enter any comments you have about this transaction: >>''')
 
         
             #creating table for better visibility 
-            rows = [temp_date, temp_description,temp_type,temp_amount,temp_comments]
+            rows = [temp_date, temp_description,temp_type,self.category_list[category_selection-1],temp_amount,temp_comments]
             self.create_table(rows)
 
             #validating input
@@ -130,8 +167,8 @@ class menuSelection():
             
                 #adding entry into database
                 self.cursor.execute('''
-                                    INSERT INTO budgettracker (Date, Description,Type,Amount,Comments)
-                                    VALUES(?,?,?,?,?)''', rows)
+                                    INSERT INTO budgettracker (Date, Description,Type, Category,Amount,Comments)
+                                    VALUES(?,?,?,?,?,?)''', rows)
                 self.db.commit()
                 
                 break
@@ -153,8 +190,8 @@ class menuSelection():
                             ORDER BY Date
                             ''')
         list_expenses = self.cursor.fetchall()
-        headers = ["Date", "Desciption", "Type", "Amount(R)", "Comments"]
-  
+        headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
+        print(list_expenses)
         self.create_table_with_own_headers(headers,list_expenses)
         self.menu_selection()
         
@@ -167,8 +204,42 @@ class menuSelection():
 
     def view_expenses_by_category(self):
         print("ENTERING view_expenses_by_category")
+
+        while True:
+                for index, value in enumerate(self.category_list, start=1):
+                    print(f"{index}. {value}")
+
+                try: 
+                    category_selection = int(input("Please select a category to view ie 3: "))
+
+                    if(category_selection > len(self.category_list)) or category_selection < 1:
+                        print("Incorrect category selection please try again")
+                    else:
+                        break 
+
+                except ValueError:
+                    print("You have chosen the incorrect option")
+
+    
+        print(self.category_list[category_selection-1])
+        self.cursor.execute('''
+                            SELECT * 
+                            FROM budgettracker
+                            WHERE Category = ? AND Type = 'Expense'
+                            ORDER BY Date
+                            ''', (self.category_list[category_selection-1],) )
+        
+        list_expenses = self.cursor.fetchall()
+
+        headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
+        print(list_expenses)
+        self.create_table_with_own_headers(headers,list_expenses)
+        self.menu_selection()
+        
         
         pass
+
+
     def add_income(self):
         
         while True:
@@ -179,13 +250,29 @@ class menuSelection():
 
             temp_type = 'Income'
 
-            temp_amount = float(input('How much was spent ie R120.05? >> R'))
+            while True:
+                for index, value in enumerate(self.category_list, start=1):
+                    print(f"{index}. {value}")
+
+                try: 
+                    category_selection = int(input("Please select a category ie 3: "))
+
+                    if(category_selection > len(self.category_list)) or category_selection < 1:
+                        print("Incorrect category selection please try again")
+                    else:
+                        break 
+
+                except ValueError:
+                    print("You have chosen the incorrect option")
+
+
+            temp_amount = float(input('How much was recieved ie R120.05? >> R'))
             
             temp_comments = input('Please enter any comments you have about this transaction: >>')
 
-        
+    
             #creating table for better visibility 
-            rows = [temp_date, temp_description,temp_type,temp_amount,temp_comments]
+            rows = [temp_date, temp_description,temp_type, self.category_list[category_selection-1],temp_amount,temp_comments]
             self.create_table(rows)
 
             #validating input
@@ -202,8 +289,8 @@ class menuSelection():
             
                 #adding entry into database
                 self.cursor.execute('''
-                                    INSERT INTO budgettracker (Date, Description,Type,Amount,Comments)
-                                    VALUES(?,?,?,?,?)''', rows)
+                                    INSERT INTO budgettracker (Date, Description,Type, Category,Amount,Comments)
+                                    VALUES(?,?,?,?,?,?)''', rows)
                 self.db.commit()
                 
                 break
@@ -224,7 +311,7 @@ class menuSelection():
     def view_income(self):
         print("ENTERING view_income")
          
-
+        
         self.cursor.execute('''
                             SELECT * 
                             FROM budgettracker
@@ -232,7 +319,7 @@ class menuSelection():
                             ORDER BY Date
                             ''')
         list_income = self.cursor.fetchall()
-        headers = ["Date", "Desciption", "Type", "Amount(R)", "Comments"]
+        headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
 
 
         self.create_table_with_own_headers(headers,list_income)
