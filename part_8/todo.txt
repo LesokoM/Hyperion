@@ -1,0 +1,4 @@
+1. Need to create validation for entry like is date correct what happens if input is correct 
+    -(maybe get a seperate function that will evaluate this) does the month even exist 
+    -if amount is put in with comma or with a minus or with a R or some sort of symbol 
+
