@@ -237,7 +237,7 @@ class menuSelection():
         self.menu_selection()
         
         
-        pass
+        
 
 
     def add_income(self):
@@ -327,8 +327,40 @@ class menuSelection():
         
    
     def view_income_by_category(self):
-        print("ENTERING view_income_by_category")
-        pass
+        
+        while True:
+                for index, value in enumerate(self.category_list, start=1):
+                    print(f"{index}. {value}")
+
+                try: 
+                    category_selection = int(input("Please select a category to view ie 3: "))
+
+                    if(category_selection > len(self.category_list)) or category_selection < 1:
+                        print("Incorrect category selection please try again")
+                    else:
+                        break 
+
+                except ValueError:
+                    print("You have chosen the incorrect option")
+
+    
+        print(self.category_list[category_selection-1])
+        self.cursor.execute('''
+                            SELECT * 
+                            FROM budgettracker
+                            WHERE Category = ? AND Type = 'Income'
+                            ORDER BY Date
+                            ''', (self.category_list[category_selection-1],) )
+        
+        list_incomes = self.cursor.fetchall()
+
+        headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
+        print(list_incomes)
+        self.create_table_with_own_headers(headers,list_incomes)
+        self.menu_selection()
+        
+    
+ 
     def set_budget_for_a_category(self):
         print("ENTERING set_budget_for_a_category")
         pass
