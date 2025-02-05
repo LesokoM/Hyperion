@@ -10,12 +10,14 @@ from tabulate import tabulate
 
 class menuSelection():
 
+
     def __init__(self):
+                
                 
                 print("CREATING DATABASE...")
                 
                 self.category_list = ["Savings", "Groceries","Utilites","Health","Insurance","Transportation","Clothing","Cellphone and Internet" , "Petrol/Diesel","Housing", "Main Job", "Side Hustle"]
-
+                self.category_list.sort()
                 
                 self.db =sqlite3.connect('budgettracker.db') #links us to the database
                 self.cursor = self.db.cursor() #creates a cursor linked to the database 
@@ -34,19 +36,9 @@ class menuSelection():
                 self.db.commit()
                 
                 
-                #dummy_entries = [ ("2024-06-24", "Insurance", "Expense", "Insurance", -3000, "No"),
-                #                 ("2024-04-24", "Petrol", "Expense", "Petrol/Diesel", -500, "No"),
-                #                ("2024-01-13", "MediCare", "Expense", "Health", -2000, "No"),
-                #                ("2024-02-16", "Salary", "Income", "Main Job", 14000, "From main job in Sandton"),
-                #                ]
-             
-                #self.cursor.executemany('''
-                 #                   INSERT OR IGNORE INTO budgettracker(Date,Description,Type,Category,Amount,Comments)
-                  #                  VALUES(?,?,?,?,?,?)
-                  #                   ''', dummy_entries)
-                
-               #self.db.commit()
-          
+                #add dummy entires here
+
+
                 self.menu_selection()
 
         
@@ -61,12 +53,13 @@ class menuSelection():
         4: self.add_income,
         5: self.view_income,
         6: self.view_income_by_category,
-        7: self.set_budget_for_a_category,
-        8: self.view_budget_for_category,
-        9: self.set_financial_goals,
-        10:self.view_progress_towards_financial_goals,
-        11:self.quit_app,
-        12:self.delete_account
+        7: self.add_a_category,
+        8: self.set_budget_for_a_category,
+        9: self.view_budget_for_category,
+        10: self.set_financial_goals,
+        11:self.view_progress_towards_financial_goals,
+        12:self.quit_app,
+        13:self.delete_account
 
         } #dictionary holding all the functions from the menu
 
@@ -74,21 +67,22 @@ class menuSelection():
 
             try:
                 menu_num_selection = int(input('''
-                                1. Add expense
-                                2. View expenses 
-                                3. View expenses by category 
-                                4. Add income
-                                5. View income
-                                6. View income by category 
-                                7. Set budget for a category 
-                                8. View budget for category 
-                                9. Set financial goals
-                                10. View progress towards financial goals
-                                11. Quit 
-                                12. Delete Account
+                                1.Add expense
+                                2.View expenses 
+                                3.View expenses by category 
+                                4.Add income
+                                5.View income
+                                6.View income by category 
+                                7.Add a category
+                                8.Set budget for a category 
+                                9.View budget for category 
+                                10.Set financial goals
+                                11.View progress towards financial goals
+                                12.Quit 
+                                13.Delete Account
                                 >> '''
                                             ))
-                if menu_num_selection > 12 or menu_num_selection < 1:
+                if menu_num_selection > len(menu_dictionary) or menu_num_selection < 1:
                     print("Incorrect option selection")
                 else: 
                     break 
@@ -111,7 +105,6 @@ class menuSelection():
     def create_table_with_own_headers(self,headers, rows):
     #neater output 
         print("creating table with your headers.....")
-        print(rows)
         table = tabulate(rows, headers= headers, tablefmt = "fancy_grid")
         print(table)
 
@@ -191,7 +184,6 @@ class menuSelection():
                             ''')
         list_expenses = self.cursor.fetchall()
         headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
-        print(list_expenses)
         self.create_table_with_own_headers(headers,list_expenses)
         self.menu_selection()
         
@@ -232,7 +224,7 @@ class menuSelection():
         list_expenses = self.cursor.fetchall()
 
         headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
-        print(list_expenses)
+       
         self.create_table_with_own_headers(headers,list_expenses)
         self.menu_selection()
         
@@ -355,12 +347,14 @@ class menuSelection():
         list_incomes = self.cursor.fetchall()
 
         headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
-        print(list_incomes)
+       
         self.create_table_with_own_headers(headers,list_incomes)
         self.menu_selection()
         
+    def add_a_category(self):
+        print("adding a category")
+        pass
     
- 
     def set_budget_for_a_category(self):
         print("ENTERING set_budget_for_a_category")
         pass
