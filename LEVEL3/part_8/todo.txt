@@ -16,7 +16,7 @@
     petrol/diesel 
     housing
 
-4. allow to update or add ctegories with a maximum of 15 categories
+4. allow to update or add ctegories with a maximum of 15 categories x
 
 
     dummy_entries = [

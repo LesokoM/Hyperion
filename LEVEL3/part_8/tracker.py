@@ -1,7 +1,8 @@
 import sqlite3
 from tabulate import tabulate
-
-
+import os
+from tqdm import tqdm
+import time
 
 
 #starting_balance = int(input("What is your current balance? ie R12 000.50: R"))
@@ -9,16 +10,24 @@ from tabulate import tabulate
 
 
 class menuSelection():
+    category_list = ["Savings", "Groceries","Utilites","Health","Insurance","Transportation","Clothing","Cellphone and Internet" , "Petrol/Diesel","Housing", "Main Job", "Side Hustle"]
 
+    def loading_screen(self):
+        for i in tqdm(range(5)):
+                      time.sleep(0.2)
 
+    def clear_screen(self):
+        if os.name== "nt":
+            os.system("cls")
+        else:
+            os.system("clear")
+         
+            
+    
     def __init__(self):
-                
-                
+       
                 print("CREATING DATABASE...")
-                
-                self.category_list = ["Savings", "Groceries","Utilites","Health","Insurance","Transportation","Clothing","Cellphone and Internet" , "Petrol/Diesel","Housing", "Main Job", "Side Hustle"]
-                self.category_list.sort()
-                
+
                 self.db =sqlite3.connect('budgettracker.db') #links us to the database
                 self.cursor = self.db.cursor() #creates a cursor linked to the database 
 
@@ -34,9 +43,46 @@ class menuSelection():
                             ''') #creating database 
 
                 self.db.commit()
+             
+                if os.path.exists("initialised.txt"):
+                    pass
+                else:    
+                    print("Creating dummy entries...")
+                    with open("initialised.txt","w") as file:
+                        pass
+                    dummy_entries = [
+                    ("2024-01-05", "Salary", "Income", "Main Job", 15000, "January salary from main job"),
+                    ("2024-02-14", "Groceries", "Expense", "Groceries", -1200, "Weekly grocery shopping"),
+                    ("2024-03-10", "Electricity Bill", "Expense", "Utilities", -900, "Monthly electricity bill"),
+                    ("2024-04-05", "Health Insurance", "Expense", "Health", -2000, "Monthly health insurance payment"),
+                    ("2024-05-20", "Petrol", "Expense", "Petrol/Diesel", -800, "Fuel for the car"),
+                    ("2024-06-15", "Freelance Work", "Income", "Side Hustle", 3000, "Completed a graphic design project"),
+                    ("2024-07-01", "Rent", "Expense", "Housing", -7500, "Monthly apartment rent"),
+                    ("2024-08-10", "Clothing", "Expense", "Clothing", -1800, "Bought new work outfits"),
+                    ("2024-09-25", "Savings Deposit", "Expense", "Savings", -5000, "Transferred to savings account"),
+                    ("2024-10-12", "Internet Bill", "Expense", "Cellphone and Internet", -700, "Monthly internet subscription"),
+                    ("2024-11-15", "Car Insurance", "Expense", "Insurance", -1200, "Quarterly car insurance payment"),
+                    ("2024-12-24", "Groceries", "Expense", "Groceries", -1400, "Christmas grocery shopping"),
+                    ("2024-01-20", "Phone Plan", "Expense", "Cellphone and Internet", -500, "Monthly cellphone plan"),
+                    ("2024-03-30", "Public Transport", "Expense", "Transportation", -150, "Bus tickets for the month"),
+                    ("2024-04-15", "Medical Checkup", "Expense", "Health", -600, "Annual health checkup"),
+                    ("2024-06-25", "Petrol", "Expense", "Petrol/Diesel", -900, "Filled up the tank"),
+                    ("2024-09-05", "Salary", "Income", "Main Job", 15000, "September salary from main job"),
+                    ("2024-10-30", "Utilities", "Expense", "Utilities", -1000, "Monthly water and electricity bill"),
+                    ("2024-11-18", "Groceries", "Expense", "Groceries", -1100, "Weekly grocery shopping"),
+                    ("2024-12-10", "Side Gig", "Income", "Side Hustle", 4000, "Income from tutoring students"),
+                            ]
+             
+                    self.cursor.executemany('''
+                                        INSERT OR IGNORE INTO budgettracker(Date,Description,Type,Category,Amount,Comments)
+                                        VALUES(?,?,?,?,?,?)
+                                        ''', dummy_entries)
+                    
+                    self.db.commit()
+                    file.close()
+                               #we have to make it run once because it re-assigns them and removes the changes we need flag for dummy lis and pre-exisiting category list
+                    self.category_list.sort()
                 
-                
-                #add dummy entires here
 
 
                 self.menu_selection()
@@ -45,7 +91,7 @@ class menuSelection():
 
 
     def menu_selection(self):
-
+        self.clear_screen()
         menu_dictionary = {
         1: self.add_expense,
         2: self.view_expenses,
@@ -95,6 +141,8 @@ class menuSelection():
   
     def create_table(self, rows):
         #creating neater output. Need to create it so that it works everytime when displaying the db too 
+        self.loading_screen()
+        self.clear_screen()
         print("creating table.....")
         headers = ["Date", "Desciption", "Type", "Category", "Amount(R)", "Comments"]
 
@@ -104,6 +152,8 @@ class menuSelection():
 
     def create_table_with_own_headers(self,headers, rows):
     #neater output 
+        self.loading_screen()
+        self.clear_screen()
         print("creating table with your headers.....")
         table = tabulate(rows, headers= headers, tablefmt = "fancy_grid")
         print(table)
@@ -117,7 +167,7 @@ class menuSelection():
             temp_description = input('''Please give the transaction a name: >>''')
 
             temp_type = 'Expense'
-
+            print(self.category_list)
             while True:
                 for index, value in enumerate(self.category_list, start=1):
                     print(f"{index}. {value}")
@@ -132,8 +182,6 @@ class menuSelection():
 
                 except ValueError:
                     print("You have chosen the incorrect option")
-
-
 
 
 
@@ -174,6 +222,8 @@ class menuSelection():
 
 
     def view_expenses(self):
+       
+        
         print("ENTERING view_expenses")
 
         self.cursor.execute('''
@@ -185,6 +235,7 @@ class menuSelection():
         list_expenses = self.cursor.fetchall()
         headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
         self.create_table_with_own_headers(headers,list_expenses)
+        time.sleep(2)
         self.menu_selection()
         
 
@@ -196,6 +247,7 @@ class menuSelection():
 
     def view_expenses_by_category(self):
         print("ENTERING view_expenses_by_category")
+      
 
         while True:
                 for index, value in enumerate(self.category_list, start=1):
@@ -226,6 +278,8 @@ class menuSelection():
         headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
        
         self.create_table_with_own_headers(headers,list_expenses)
+
+        time.sleep(2)
         self.menu_selection()
         
         
@@ -259,7 +313,7 @@ class menuSelection():
 
 
             temp_amount = float(input('How much was recieved ie R120.05? >> R'))
-            
+                 
             temp_comments = input('Please enter any comments you have about this transaction: >>')
 
     
@@ -302,6 +356,8 @@ class menuSelection():
 
     def view_income(self):
         print("ENTERING view_income")
+
+        
          
         
         self.cursor.execute('''
@@ -315,10 +371,12 @@ class menuSelection():
 
 
         self.create_table_with_own_headers(headers,list_income)
+        time.sleep(2)
         self.menu_selection()
         
    
     def view_income_by_category(self):
+      
         
         while True:
                 for index, value in enumerate(self.category_list, start=1):
@@ -349,12 +407,52 @@ class menuSelection():
         headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
        
         self.create_table_with_own_headers(headers,list_incomes)
+        time.sleep(2)
         self.menu_selection()
         
+
     def add_a_category(self):
         print("adding a category")
+
+        new_category = input("Please enter a new category: ")
+
+        edited_category_list = []
+
+        for i in self.category_list:
+            i = i.strip()
+            i = i.lower()
+
+            edited_category_list.append(i)
+
+
+        if new_category.strip().lower() in edited_category_list:
+            print("This category already exists")
+        else:
+            self.category_list.append(new_category)
+            self.category_list.sort()
+
+        self.loading_screen()
+        print("=== Saved Categories ===")
+        for i, value in enumerate(self.category_list, start=1):
+            print(f"{i}. {value}")
+
+        time.sleep(1)
+        self.menu_selection()
+
+
+
+
+
+
+
+
+         
+
+
+
         pass
     
+
     def set_budget_for_a_category(self):
         print("ENTERING set_budget_for_a_category")
         pass
@@ -376,16 +474,9 @@ class menuSelection():
         pass
 
 
-    
-
-
-    
-
-
 #####################################
 menuSelection()
        
-
 
 
 
