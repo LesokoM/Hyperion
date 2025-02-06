@@ -10,11 +10,75 @@ import time
 
 
 class menuSelection():
-    category_list = ["Savings", "Groceries","Utilites","Health","Insurance","Transportation","Clothing","Cellphone and Internet" , "Petrol/Diesel","Housing", "Main Job", "Side Hustle"]
+  
+    def __init__(self):
+                           
+        self.category_list  = ["Savings", "Groceries","Utilites","Health","Insurance","Transportation","Clothing","Cellphone and Internet" , "Petrol/Diesel","Housing", "Main Job", "Side Hustle"]
+
+
+        self.db =sqlite3.connect('budgettracker.db') #links us to the database
+        self.cursor = self.db.cursor() #creates a cursor linked to the database 
+
+        self.cursor.execute('''
+                    CREATE TABLE IF NOT EXISTS budgettracker(
+                    id INTEGER PRIMARY KEY,
+                    Date DATE,
+                    Description TEXT,
+                    Type TEXT,
+                    Category TEXT,
+                    Amount INT,
+                    Comments TEXT)
+                    ''') #creating database 
+
+        self.db.commit()
+        
+        if os.path.exists("initialised.txt"):
+            print("EXISTS")
+        else:    
+
+            with open("initialised.txt","w") as file:
+                pass
+            dummy_entries = [
+            ("2024-01-05", "Salary", "Income", "Main Job", 15000, "January salary from main job"),
+            ("2024-02-14", "Groceries", "Expense", "Groceries", -1200, "Weekly grocery shopping"),
+            ("2024-03-10", "Electricity Bill", "Expense", "Utilities", -900, "Monthly electricity bill"),
+            ("2024-04-05", "Health Insurance", "Expense", "Health", -2000, "Monthly health insurance payment"),
+            ("2024-05-20", "Petrol", "Expense", "Petrol/Diesel", -800, "Fuel for the car"),
+            ("2024-06-15", "Freelance Work", "Income", "Side Hustle", 3000, "Completed a graphic design project"),
+            ("2024-07-01", "Rent", "Expense", "Housing", -7500, "Monthly apartment rent"),
+            ("2024-08-10", "Clothing", "Expense", "Clothing", -1800, "Bought new work outfits"),
+            ("2024-09-25", "Savings Deposit", "Expense", "Savings", -5000, "Transferred to savings account"),
+            ("2024-10-12", "Internet Bill", "Expense", "Cellphone and Internet", -700, "Monthly internet subscription"),
+            ("2024-11-15", "Car Insurance", "Expense", "Insurance", -1200, "Quarterly car insurance payment"),
+            ("2024-12-24", "Groceries", "Expense", "Groceries", -1400, "Christmas grocery shopping"),
+            ("2024-01-20", "Phone Plan", "Expense", "Cellphone and Internet", -500, "Monthly cellphone plan"),
+            ("2024-03-30", "Public Transport", "Expense", "Transportation", -150, "Bus tickets for the month"),
+            ("2024-04-15", "Medical Checkup", "Expense", "Health", -600, "Annual health checkup"),
+            ("2024-06-25", "Petrol", "Expense", "Petrol/Diesel", -900, "Filled up the tank"),
+            ("2024-09-05", "Salary", "Income", "Main Job", 15000, "September salary from main job"),
+            ("2024-10-30", "Utilities", "Expense", "Utilities", -1000, "Monthly water and electricity bill"),
+            ("2024-11-18", "Groceries", "Expense", "Groceries", -1100, "Weekly grocery shopping"),
+            ("2024-12-10", "Side Gig", "Income", "Side Hustle", 4000, "Income from tutoring students"),
+                    ]
+        
+            self.cursor.executemany('''
+                                INSERT OR IGNORE INTO budgettracker(Date,Description,Type,Category,Amount,Comments)
+                                VALUES(?,?,?,?,?,?)
+                                ''', dummy_entries)
+            
+            self.db.commit()
+            file.close()
+                        #we have to make it run once because it re-assigns them and removes the changes we need flag for dummy lis and pre-exisiting category list
+            self.category_list.sort()
+        
+
+
+        self.menu_selection()
+    
 
     def loading_screen(self):
         for i in tqdm(range(5)):
-                      time.sleep(0.2)
+                    time.sleep(0.2)
 
     def clear_screen(self):
         if os.name== "nt":
@@ -22,76 +86,9 @@ class menuSelection():
         else:
             os.system("clear")
          
-            
-    
-    def __init__(self):
-       
-                print("CREATING DATABASE...")
-
-                self.db =sqlite3.connect('budgettracker.db') #links us to the database
-                self.cursor = self.db.cursor() #creates a cursor linked to the database 
-
-                self.cursor.execute('''
-                            CREATE TABLE IF NOT EXISTS budgettracker(
-                            id INTEGER PRIMARY KEY,
-                            Date DATE,
-                            Description TEXT,
-                            Type TEXT,
-                            Category TEXT,
-                            Amount INT,
-                            Comments TEXT)
-                            ''') #creating database 
-
-                self.db.commit()
-             
-                if os.path.exists("initialised.txt"):
-                    pass
-                else:    
-                    print("Creating dummy entries...")
-                    with open("initialised.txt","w") as file:
-                        pass
-                    dummy_entries = [
-                    ("2024-01-05", "Salary", "Income", "Main Job", 15000, "January salary from main job"),
-                    ("2024-02-14", "Groceries", "Expense", "Groceries", -1200, "Weekly grocery shopping"),
-                    ("2024-03-10", "Electricity Bill", "Expense", "Utilities", -900, "Monthly electricity bill"),
-                    ("2024-04-05", "Health Insurance", "Expense", "Health", -2000, "Monthly health insurance payment"),
-                    ("2024-05-20", "Petrol", "Expense", "Petrol/Diesel", -800, "Fuel for the car"),
-                    ("2024-06-15", "Freelance Work", "Income", "Side Hustle", 3000, "Completed a graphic design project"),
-                    ("2024-07-01", "Rent", "Expense", "Housing", -7500, "Monthly apartment rent"),
-                    ("2024-08-10", "Clothing", "Expense", "Clothing", -1800, "Bought new work outfits"),
-                    ("2024-09-25", "Savings Deposit", "Expense", "Savings", -5000, "Transferred to savings account"),
-                    ("2024-10-12", "Internet Bill", "Expense", "Cellphone and Internet", -700, "Monthly internet subscription"),
-                    ("2024-11-15", "Car Insurance", "Expense", "Insurance", -1200, "Quarterly car insurance payment"),
-                    ("2024-12-24", "Groceries", "Expense", "Groceries", -1400, "Christmas grocery shopping"),
-                    ("2024-01-20", "Phone Plan", "Expense", "Cellphone and Internet", -500, "Monthly cellphone plan"),
-                    ("2024-03-30", "Public Transport", "Expense", "Transportation", -150, "Bus tickets for the month"),
-                    ("2024-04-15", "Medical Checkup", "Expense", "Health", -600, "Annual health checkup"),
-                    ("2024-06-25", "Petrol", "Expense", "Petrol/Diesel", -900, "Filled up the tank"),
-                    ("2024-09-05", "Salary", "Income", "Main Job", 15000, "September salary from main job"),
-                    ("2024-10-30", "Utilities", "Expense", "Utilities", -1000, "Monthly water and electricity bill"),
-                    ("2024-11-18", "Groceries", "Expense", "Groceries", -1100, "Weekly grocery shopping"),
-                    ("2024-12-10", "Side Gig", "Income", "Side Hustle", 4000, "Income from tutoring students"),
-                            ]
-             
-                    self.cursor.executemany('''
-                                        INSERT OR IGNORE INTO budgettracker(Date,Description,Type,Category,Amount,Comments)
-                                        VALUES(?,?,?,?,?,?)
-                                        ''', dummy_entries)
-                    
-                    self.db.commit()
-                    file.close()
-                               #we have to make it run once because it re-assigns them and removes the changes we need flag for dummy lis and pre-exisiting category list
-                    self.category_list.sort()
-                
-
-
-                self.menu_selection()
-
-        
-
-
     def menu_selection(self):
-        self.clear_screen()
+        time.sleep(5)
+   
         menu_dictionary = {
         1: self.add_expense,
         2: self.view_expenses,
@@ -138,12 +135,12 @@ class menuSelection():
 
         menu_dictionary[menu_num_selection]()
 
-  
+
     def create_table(self, rows):
         #creating neater output. Need to create it so that it works everytime when displaying the db too 
         self.loading_screen()
         self.clear_screen()
-        print("creating table.....")
+   
         headers = ["Date", "Desciption", "Type", "Category", "Amount(R)", "Comments"]
 
         table = tabulate(zip(headers,rows), headers= ["Information", "Your Input"], tablefmt = "fancy_grid")
@@ -154,7 +151,7 @@ class menuSelection():
     #neater output 
         self.loading_screen()
         self.clear_screen()
-        print("creating table with your headers.....")
+        
         table = tabulate(rows, headers= headers, tablefmt = "fancy_grid")
         print(table)
 
@@ -167,7 +164,7 @@ class menuSelection():
             temp_description = input('''Please give the transaction a name: >>''')
 
             temp_type = 'Expense'
-            print(self.category_list)
+         
             while True:
                 for index, value in enumerate(self.category_list, start=1):
                     print(f"{index}. {value}")
@@ -224,8 +221,6 @@ class menuSelection():
     def view_expenses(self):
        
         
-        print("ENTERING view_expenses")
-
         self.cursor.execute('''
                             SELECT * 
                             FROM budgettracker
@@ -246,7 +241,7 @@ class menuSelection():
 
 
     def view_expenses_by_category(self):
-        print("ENTERING view_expenses_by_category")
+
       
 
         while True:
@@ -348,18 +343,8 @@ class menuSelection():
         self.menu_selection()
 
 
-
-
-
-
-
-
     def view_income(self):
-        print("ENTERING view_income")
 
-        
-         
-        
         self.cursor.execute('''
                             SELECT * 
                             FROM budgettracker
@@ -394,7 +379,7 @@ class menuSelection():
                     print("You have chosen the incorrect option")
 
     
-        print(self.category_list[category_selection-1])
+ 
         self.cursor.execute('''
                             SELECT * 
                             FROM budgettracker
@@ -412,8 +397,8 @@ class menuSelection():
         
 
     def add_a_category(self):
-        print("adding a category")
-
+ 
+ 
         new_category = input("Please enter a new category: ")
 
         edited_category_list = []
@@ -441,21 +426,16 @@ class menuSelection():
 
 
 
-
-
-
-
-
-         
-
-
-
-        pass
-    
-
     def set_budget_for_a_category(self):
         print("ENTERING set_budget_for_a_category")
-        pass
+        self.category_list.sort()
+        print(self.category_list)
+        
+
+
+
+
+        
     def view_budget_for_category(self):
         print("ENTERING view_budget_for_category")
         pass
@@ -470,12 +450,26 @@ class menuSelection():
         exit()
         pass
     def delete_account(self):
-        print("ENTERING delete_sccount")
+        confirm_delete = input("You are about to permenatley delete your account! Are you sure [Y/n]: ").lower()
+
+        if confirm_delete == 'n':
+            pass
+
+          
+
+
+        self.cursor.execute('''
+                        DROP TABLE budgettracker
+
+                            ''')
+
+
         pass
 
 
 #####################################
-menuSelection()
+mySavings = menuSelection()
+mySavings.menu_selection()
        
 
 
