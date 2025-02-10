@@ -7,12 +7,6 @@ import time
 class menuSelection():
     def __init__(self):
         self.loading_screen()
-                      
-        self.category_list  = ["Savings", "Groceries", "Utilites",
-                               "Health", "Insurance", "Transportation", "Clothing",
-                               "Cellphone and Internet", "Petrol/Diesel", "Housing", 
-                               "Main Job", "Side Hustle"]
-
 
         self.db =sqlite3.connect('budgettracker.db') #links us to the database
         self.cursor = self.db.cursor() #creates a cursor linked to the database 
@@ -26,20 +20,21 @@ class menuSelection():
             Category TEXT,
             Amount INT,
             Comments TEXT)
-            ''') #creating database 
-
+            ''') # creating database 
+        
         self.db.commit()
 
         self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS categories(
+            CREATE TABLE IF NOT EXISTS category(
             id INTEGER PRIMARY KEY,
-            Date DATE,
-            Description TEXT,
-            Type TEXT,
-            Category TEXT,
-            Amount INT,
-            Comments TEXT)
-            ''') 
+            Category_Name TEXT,
+            Budget INTEGER,
+            FOREIGN KEY(id) REFERENCES budgettracker(id)            
+            )''')
+
+        self.db.commit()
+
+        # FOREIGN KEY GO HERE
         self.db.commit()
     
         if os.path.exists("initialised.txt"):
@@ -77,6 +72,15 @@ class menuSelection():
                 ''', dummy_entries)
             
             self.db.commit()
+
+
+            # run the program that will put in default category info then a functio that will add to the db only way for it 
+            # to reset is if user deletes everything  
+
+            self.category_list  = ["Savings", "Groceries", "Utilites","Health", 
+                            "Insurance", "Transportation", "Clothing",
+                            "Cellphone and Internet", "Petrol/Diesel", 
+                            "Housing", "Main Job", "Side Hustle"]
             file.close()
 
             self.category_list.sort()
@@ -451,6 +455,7 @@ class menuSelection():
 
             if os.path.exists("initialised.txt"):
                 os.remove("initialised.txt")
+                os.remove("budgettracker.db")
                 print("Deleting Complete")
                 exit()
             else: 
