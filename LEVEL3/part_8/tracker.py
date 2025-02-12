@@ -8,8 +8,8 @@ class menuSelection():
     def __init__(self):
         self.loading_screen()
 
-        self.db =sqlite3.connect('budgettracker.db') #links us to the database
-        self.cursor = self.db.cursor() #creates a cursor linked to the database 
+        self.db =sqlite3.connect('budgettracker.db') # links us to the database
+        self.cursor = self.db.cursor() # creates a cursor linked to the database 
 
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS category(
@@ -152,12 +152,13 @@ class menuSelection():
 			5: self.view_income,
 			6: self.view_income_by_category,
 			7: self.add_a_category,
-			8: self.set_budget_for_a_category,
-			9: self.view_budget_for_category,
-			10: self.set_financial_goals,
-			11:self.view_progress_towards_financial_goals,
-			12:self.quit_app,
-			13:self.delete_account
+            8: self.delete_a_category,
+			9: self.set_budget_for_a_category,
+			10: self.view_budget_for_category,
+			11: self.set_financial_goals,
+			12:self.view_progress_towards_financial_goals,
+			13:self.quit_app,
+			14:self.delete_account
 
 			} # dictionary holding all the functions from the menu
 
@@ -172,14 +173,16 @@ class menuSelection():
                     5.View income
                     6.View income by category 
                     7.Add a category
-                    8.Set budget for a category 
-                    9.View budget for category 
-                    10.Set financial goals
-                    11.View progress towards financial goals
-                    12.Quit 
-                    13.Delete Account
+                    8.Delete a category
+                    9.Set budget for a category 
+                    10.View budget for category 
+                    11.Set financial goals
+                    12.View progress towards financial goals
+                    13.Quit 
+                    14.Delete Account
                     >> '''
-                                ))
+                    ))
+                
                 if menu_num_selection > len(menu_dictionary) or menu_num_selection < 1:
                     print("Incorrect option selection")
                 else: 
@@ -188,7 +191,6 @@ class menuSelection():
                 print("You have not entered a correct value")
 
         menu_dictionary[menu_num_selection]()
-
 
     def create_table(self, rows):
         # creating neater output. Need to create it so that it works everytime when displaying the db too 
@@ -435,38 +437,115 @@ class menuSelection():
         
 
     def add_a_category(self):
- 
-        new_category = input("Please enter a new category: ")
 
-        edited_category_list = []
+        while True:
+            db_category_list = self.print_category_list()
 
-        for i in self.category_list:
-            i = i.strip()
-            i = i.lower()
+            print("==Current Categories==")
 
-            edited_category_list.append(i)
+            for index, value in enumerate(db_category_list, start =1):
+                print(f"{index}. {value[0]}")
+   
+            new_category = input("Please enter a new category: >> ")
+        
+            for  i in db_category_list:
+                if new_category.lower() == i[0].lower():
+                    print("That category already exisits. ")
+                    self.menu_selection()
+            else:       
+                budget = int(input(f"What is the monthly budget for {new_category.capitalize()}:>> R"))     
+                self.cursor.execute('''
+                    INSERT OR IGNORE INTO category(Category_Name, Budget)
+                    VALUES (?,?)
+                    ''', (new_category.capitalize(), budget))
+                self.db.commit()
+        
+            time.sleep(1)
+            self.menu_selection()
 
-        if new_category.strip().lower() in edited_category_list:
-            print("This category already exists")
-        else:
-            self.category_list.append(new_category)
-            self.category_list.sort()
+    def delete_a_category(self):
+        db_category_list = self.print_category_list()
 
-        self.loading_screen()
-        print("=== Saved Categories ===")
-        for i, value in enumerate(self.category_list, start=1):
-            print(f"{i}. {value}")
+        for i, value in enumerate(db_category_list, start=1):
+            print(f"{i}. {value[0]}")
 
-        time.sleep(1)
-        self.menu_selection()
+        while True:
+            try: 
+                del_category_selection = int(input("Which category do you want to delete ie. 2: >> "))
+
+                if del_category_selection > len(db_category_list) or del_category_selection < 1:
+                    print("Incorrect selection")
+                else:
+                    break
+            except ValueError:
+                print("Incorrect input. Please try again")
+        
+        print(db_category_list[del_category_selection-1][0])
+
+        self.cursor.execute(''' 
+            DELETE FROM category
+            WHERE Category_Name = ?
+                            ''', (db_category_list[del_category_selection-1][0],))
+        self.db.commit()
+
+
+       
 
 
     def set_budget_for_a_category(self):
         print("ENTERING set_budget_for_a_category")
-        self.category_list.sort()
-        print(self.category_list)
+       
+
+        try: 
+            budget_option_1 = int(input(
+                '''Would you like to:
+                1. Set budget for all your categories
+                2. Set budget for a specifc category
+                    >>'''))
+            
+            if budget_option_1 == 1:
+                pass
+      
+            else:
+                if budget_option_1 == 2:
+                    print(("======== Your current categories ========="))
+
+                    self.cursor.execute('''SELECT Category_Name, Budget FROM category''')
+                    categories_and_budget = self.cursor.fetchall()
+               
+                    table = tabulate(categories_and_budget, 
+                    headers = ["Category Name", "Budget"], tablefmt= 
+                    "fancy_grid", showindex=range(1, len(categories_and_budget)+1))
+                    print(table)
+                    
+                    print(categories_and_budget)
+
+                    while True:
+                        try:
+                            set_selection = int(input("Which budget would you like to set? ie 4: >>"))
+
+                            if set_selection > len(categories_and_budget) or set_selection < 1:
+                                print("Incorrect value chosen")
+                            else: 
+                                try:
+                                    new_budget_amount = float(input("Please enter a new budget amount: >>R "))
+                                    break
+                                except ValueError:
+                                    print("Unknown value added")
+                        except ValueError:
+                            print("Incorrect option selected")
+                    
+                    print(f"{categories_and_budget[set_selection-1][0]} new budget is R{new_budget_amount}")
+
+
+
+
+        except ValueError:
+            print("Incorrect option selected. Please try again")
+    
         
-        
+
+
     def view_budget_for_category(self):
         print("ENTERING view_budget_for_category")
         pass
