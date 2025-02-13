@@ -495,65 +495,123 @@ class menuSelection():
     def set_budget_for_a_category(self):
         print("ENTERING set_budget_for_a_category")
        
-
-        try: 
-            budget_option_1 = int(input(
-                '''Would you like to:
-                1. Set budget for all your categories
-                2. Set budget for a specifc category
-                    >>'''))
-            
-            if budget_option_1 == 1:
-                pass
-      
-            else:
-                if budget_option_1 == 2:
-                    print(("======== Your current categories ========="))
-
+        while True:
+            try: 
+                budget_option_1 = int(input(
+                    '''Would you like to:
+                    1. Set budget for all your categories
+                    2. Set budget for a specifc category
+                        >>'''))
+                
+                if budget_option_1 == 1:
                     self.cursor.execute('''SELECT Category_Name, Budget FROM category''')
                     categories_and_budget = self.cursor.fetchall()
-               
-                    table = tabulate(categories_and_budget, 
-                    headers = ["Category Name", "Budget"], tablefmt= 
-                    "fancy_grid", showindex=range(1, len(categories_and_budget)+1))
-                    print(table)
-                    
                     print(categories_and_budget)
+                    for i in range(len(categories_and_budget)):
+                        print(f"Category: {categories_and_budget[i][0]} Current Budget: R{categories_and_budget[i][1]}")
 
-                    while True:
-                        try:
-                            set_selection = int(input("Which budget would you like to set? ie 4: >>"))
+                        table = tabulate([categories_and_budget[i]],
+                                        headers = ["Category",
+                                        "Current Budget"],
+                                        tablefmt="fancy_grid")
+                        print(table)
+                        while True:
+                            try:
+                                new_budget_amount = int(input(">>Please enter a new budget amount: R"))
+                                if new_budget_amount < 0: 
+                                    new_budget_amount   = new_budget_amount * -1
+                                break
+                            except ValueError:
+                                print("Please try again.")
 
-                            if set_selection > len(categories_and_budget) or set_selection < 1:
-                                print("Incorrect value chosen")
-                            else: 
-                                try:
-                                    new_budget_amount = float(input("Please enter a new budget amount: >>R "))
-                                    break
-                                except ValueError:
-                                    print("Unknown value added")
-                        except ValueError:
-                            print("Incorrect option selected")
-                    
-                    print(f"{categories_and_budget[set_selection-1][0]} new budget is R{new_budget_amount}")
+                        self.cursor.execute('''
+                                UPDATE category 
+                                SET Budget = ?
+                                WHERE Category_Name = ?
+                                    ''', (new_budget_amount, categories_and_budget[i][0]))
+                        self.db.commit()
+                    self.menu_selection()
+          
+                else:
+                    if budget_option_1 == 2:
+                        print(("======== Your current categories ========="))
 
-                    self.cursor.execute(''' 
-                        UPDATE category 
-                        SET Budget = ? 
-                        WHERE Category_Name = ?''', (new_budget_amount,categories_and_budget[set_selection-1][0]))
-                    self.db.commit()
+                        self.cursor.execute('''SELECT Category_Name, Budget FROM category''')
+                        categories_and_budget = self.cursor.fetchall()
+                
+                        table = tabulate(categories_and_budget, 
+                        headers = ["Category Name", "Budget"], tablefmt= 
+                        "fancy_grid", showindex=range(1, len(categories_and_budget)+1))
+                        print(table)
+                        
+
+                        while True:
+                            try:
+                                set_selection = int(input("Which budget would you like to set? ie 4: >>"))
+
+                                if set_selection > len(categories_and_budget) or set_selection < 1:
+                                    print("Incorrect value chosen")
+                                else: 
+                                    try:
+                                        new_budget_amount = float(input("Please enter a new budget amount: >>R "))
+                                        break
+                                    except ValueError:
+                                        print("Unknown value added")
+                            except ValueError:
+                                print("Incorrect option selected")
+                        
+                        print(f"{categories_and_budget[set_selection-1][0]} new budget is R{new_budget_amount}")
+
+                        self.cursor.execute(''' 
+                            UPDATE category 
+                            SET Budget = ? 
+                            WHERE Category_Name = ?''', (new_budget_amount,categories_and_budget[set_selection-1][0]))
+                        self.db.commit()
+                        self.menu_selection()
 
 
-
-
-        except ValueError:
-            print("Incorrect option selected. Please try again")
-    
+            except ValueError:
+                print("Incorrect option selected. Please try again")
+        
         
 
 
     def view_budget_for_category(self):
         print("ENTERING view_budget_for_category")
+
+        self.cursor.execute('''
+                            SELECT Category_Name, Budget
+                            FROM category
+                            ''')
+        
+        categories_and_budget = self.cursor.fetchall()
+        print(categories_and_budget)
+
+        for i, value in enumerate(categories_and_budget, start=0):
+            print(f"{i+1}. {categories_and_budget[i][0]}")
+        
+        while True:
+            try:
+                view_category_selection = int(input("Which category would you like to view ie 3: "))
+
+                if view_category_selection > len(categories_and_budget) or view_category_selection < 1:
+                    print("Incorrect selection. Please try again")
+                else:
+                    break
+            except ValueError:
+                print("Incorrect option selected")
+
+        table = tabulate([[categories_and_budget[view_category_selection-1][0],categories_and_budget[view_category_selection-1][1]]],
+                        headers = ["Category", "Budget"], tablefmt="fancy_grid" )
+        print(table)
+
+        self.menu_selection()
+        
+
+
+
+
+        
         pass
 
 

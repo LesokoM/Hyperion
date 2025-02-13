@@ -18,6 +18,8 @@
 
 4. allow to update or add ctegories with a maximum of 15 categories x
 5. add delete a category
+6. view expense or income based on month or year ?? 
+
 
 
     dummy_entries = [
