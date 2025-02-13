@@ -537,6 +537,12 @@ class menuSelection():
                     
                     print(f"{categories_and_budget[set_selection-1][0]} new budget is R{new_budget_amount}")
 
+                    self.cursor.execute(''' 
+                        UPDATE category 
+                        SET Budget = ? 
+                        WHERE Category_Name = ?''', (new_budget_amount,categories_and_budget[set_selection-1][0]))
+                    self.db.commit()
+
 
 
 
