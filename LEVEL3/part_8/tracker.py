@@ -54,7 +54,8 @@ class menuSelection():
                 ("Petrol/Diesel", 0),
                 ("Housing", 0),
                 ("Main Job", 0),
-                ("Side Hustle", 0)
+                ("Side Hustle", 0),
+                ("Debts", 0)
                 ]
 
             self.cursor.executemany('''
@@ -107,6 +108,8 @@ class menuSelection():
                   -1100, "Weekly grocery shopping"),
                 ("2024-12-10", "Side Gig", "Income", "Side Hustle", 
                  4000, "Income from tutoring students"),
+                 ("2024-12-12", "Home Loan", "Expense", "Debts", 
+                 -4000, "320 Home Loan"),
                     ]
                   
             self.cursor.executemany('''
@@ -617,11 +620,51 @@ class menuSelection():
 
     def set_financial_goals(self):
         print("ENTERING set_financial_goals")
-        pass
+
+        '''
+        How much do you want to save? Is it for something specific? Wedding,Retirement
+        Do you want to get out of debt? 
+        Do you want to decrease your overall expense amount per month? 
+        
+        Goal: 
+        Savings - do you want to save more? how much do you want to save per month? do you want to save for something?
+        Expense Goal - do you want to spend less? do you want to stay within budget amounts (compare actual for)
+        Income goal -
+
+        What is your goal? Affected Category (yes or no) ? Amount +/-?
+
+
+        Link goal to category - to make changes 
+        '''
+
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS financial_goals_db(
+            id INTEGER PRIMARY KEY,
+            Financial_Goal_Name TEXT,
+            Linked_Category TEXT,
+            Amount INTEGER,
+            Comments TEXT,
+            FOREIGN KEY(Linked_Category) REFERENCES category(Category_Name)                                                                          
+            )''')  # creating database
+        
+
+
+        
+        self.db.commit()
+
+
+        
+
+   
 
 
     def view_progress_towards_financial_goals(self):
         print("ENTERING view_progress_towards_financial_goals")
+
+        '''
+        comparing budget amount  to goal amount if there is a link 
+        displaying non linked budget amounts 
+        '''
         pass
 
 
