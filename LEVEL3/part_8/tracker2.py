@@ -98,62 +98,6 @@ class menuSelection():
                             ''', (new_budget_amount, categories_and_budget[i][0]))
             self.db.commit()
           
-        
-            dummy_entries = [
-                ("2024-01-05", "Salary", "Income", "Main Job", 15000, 
-                 "January salary from main job"),
-                ("2024-02-14", "Groceries", "Expense", "Groceries", -1200, 
-                 "Weekly grocery shopping"),
-                ("2024-03-10", "Electricity Bill", "Expense", "Utilities", -900,
-                  "Monthly electricity bill"),
-                ("2024-04-05", "Health Insurance", "Expense", "Health", -2000, 
-                 "Monthly health insurance payment"),
-                ("2024-05-20", "Petrol", "Expense", "Petrol/Diesel", -800, 
-                 "Fuel for the car"),
-                ("2024-06-15", "Freelance Work", "Income", "Side Hustle", 3000, 
-                 "Completed a graphic design project"),
-                ("2024-07-01", "Rent", "Expense", "Housing", -7500, 
-                 "Monthly apartment rent"),
-                ("2024-08-10", "Clothing", "Expense", "Clothing", -1800, 
-                 "Bought new work outfits"),
-                ("2024-09-25", "Savings Deposit", "Expense", "Savings", -5000,
-                  "Transferred to savings account"),
-                ("2024-10-12", "Internet Bill", "Expense", 
-                 "Cellphone and Internet", -700, 
-                 "Monthly internet subscription"),
-                ("2024-11-15", "Car Insurance", "Expense", "Insurance", -1200, 
-                 "Quarterly car insurance payment"),
-                ("2024-12-24", "Groceries", "Expense", "Groceries", -1400, 
-                 "Christmas grocery shopping"),
-                ("2024-01-20", "Phone Plan", "Expense", 
-                 "Cellphone and Internet",  -500, "Monthly cellphone plan"),
-                ("2024-03-30", "Public Transport", "Expense", "Transportation", 
-                 -150, "Bus tickets for the month"),
-                ("2024-04-15", "Medical Checkup", "Expense", "Health",
-                  -600, "Annual health checkup"),
-                ("2024-06-25", "Petrol", "Expense", "Petrol/Diesel",
-                  -900, "Filled up the tank"),
-                ("2024-09-05", "Salary", "Income", "Main Job", 
-                 15000, "September salary from main job"),
-                ("2024-10-30", "Utilities", "Expense", "Utilities", 
-                 -1000, "Monthly water and electricity bill"),
-                ("2024-11-18", "Groceries", "Expense", "Groceries",
-                  -1100, "Weekly grocery shopping"),
-                ("2024-12-10", "Side Gig", "Income", "Side Hustle", 
-                 4000, "Income from tutoring students"),
-                 ("2024-12-12", "Home Loan", "Expense", "Debts", 
-                 -4000, "320 Home Loan"),
-                    ]
-                  
-            self.cursor.executemany('''
-                INSERT OR IGNORE INTO budgettracker(Date,Description,Type,Category,Amount,Comments)
-                VALUES(?,?,?,?,?,?)
-                ''', dummy_entries)
-            
-            self.db.commit()
-
-            self.def_category_list.sort()
-
         self.menu_selection()
     
     def date_validation(self, input_date):
@@ -512,7 +456,7 @@ class menuSelection():
                 self.cursor.execute('''
                     INSERT OR IGNORE INTO category(Category_Name, Budget)
                     VALUES (?,?)
-                    ORDEER BY Category_Name ASC
+                  
                     ''', (new_category.capitalize(), budget))
                 self.db.commit()
         
@@ -628,7 +572,7 @@ class menuSelection():
                             ''')
         
         categories_and_budget = self.cursor.fetchall()
-        print(categories_and_budget)
+       
 
         for i, value in enumerate(categories_and_budget, start=0):
             print(f"{i+1}. {categories_and_budget[i][0]}")
@@ -668,7 +612,7 @@ class menuSelection():
         actuals = self.cursor.fetchall()
      
 
-        # category headers
+         # category headers
         self.cursor.execute('''SELECT Category
                             FROM budgettracker
                             GROUP BY Category
@@ -687,7 +631,6 @@ class menuSelection():
         
         budget_amount = self.cursor.fetchall()
        
-    
         ''' Creating a table that shows budgeted amount and actual '''
     
         edited_actuals = []
@@ -704,10 +647,9 @@ class menuSelection():
 
         goal_data = zip( edited_headers, edited_budget_amount, edited_actuals)
 
-        
         progress_table = tabulate(goal_data, headers = ["Category", "Budget", "Actual"] , tablefmt="fancy_grid")
 
-        
+        print(progress_table)
 
         self.menu_selection()
 
