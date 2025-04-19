@@ -5,18 +5,19 @@ from tqdm import tqdm
 import time
 from datetime import datetime, date
 
+
 class menuSelection():
     def __init__(self):
         self.loading_screen()
 
-        self.db =sqlite3.connect('budgettracker.db') # links us to the database
-        self.cursor = self.db.cursor() # creates a cursor linked to the database 
+        self.db = sqlite3.connect('budgettracker.db')  # links us to the database
+        self.cursor = self.db.cursor()  # creates a cursor linked to the database
 
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS category(
             id INTEGER PRIMARY KEY,
             Category_Name TEXT,
-            Budget INTEGER      
+            Budget INTEGER
             )''')
 
         self.db.commit()
@@ -31,19 +32,19 @@ class menuSelection():
             Amount INT,
             Comments TEXT,
             FOREIGN KEY(Category) REFERENCES category(Category_Name)
-            )''')  # creating database 
+            )''')  # creating database
         
         self.db.commit()
         # FOREIGN KEY GO HERE
         if os.path.exists("initialised.txt"):
             pass
 
-        else:   
+        else:
             with open("initialised.txt", "w") as file:
 
-                pass 
+                pass
             # Above creates the file to avoid duplicates
-            self.def_category_list = [
+            self.def_category_list  =  [
                 ("Savings", 0),
                 ("Groceries", 0),
                 ("Utilities", 0),
@@ -64,84 +65,83 @@ class menuSelection():
                 VALUES (?, ?)
                 ''', self.def_category_list)
 
-            
             self.db.commit()
 
-            # Setting budget for each category 
+            # Setting budget for each category
 
             print("LETS SET OUR FINANCIAL GOALS...")
             time.sleep(1)
 
             self.cursor.execute('''SELECT Category_Name, Budget FROM category''')
-            categories_and_budget = self.cursor.fetchall()
+            categories_and_budget  =  self.cursor.fetchall()
             for i in range(len(categories_and_budget)):
                 print(f"Category: {categories_and_budget[i][0]} Current Budget: R{categories_and_budget[i][1]}")
 
-                table = tabulate([categories_and_budget[i]],
-                                headers = ["Category",
+                table  =  tabulate([categories_and_budget[i]],
+                                headers  =  ["Category",
                                 "Current Budget"],
-                                tablefmt="fancy_grid")
+                                tablefmt = "fancy_grid")
                 print(table)
                 while True:
                     try:
-                        new_budget_amount = int(input(">>Please enter a new budget amount: R"))
-                        if new_budget_amount < 0: 
-                            new_budget_amount   = new_budget_amount * -1
+                        new_budget_amount  =  int(input(">>Please enter a new budget amount: R"))
+                        if new_budget_amount < 0:
+                            new_budget_amount    =  new_budget_amount * -1
                         break
                     except ValueError:
                         print("Please try again.")
 
                 self.cursor.execute('''
-                        UPDATE category 
-                        SET Budget = ?
-                        WHERE Category_Name = ?
+                        UPDATE category
+                        SET Budget  =  ?
+                        WHERE Category_Name  =  ?
                             ''', (new_budget_amount, categories_and_budget[i][0]))
             self.db.commit()
           
         
-            dummy_entries = [
-                ("2024-01-05", "Salary", "Income", "Main Job", 15000, 
+            dummy_entries  =  [
+                ("2024-01-05", "Salary", "Income", "Main Job", 15000,
                  "January salary from main job"),
-                ("2024-02-14", "Groceries", "Expense", "Groceries", -1200, 
+                ("2024-02-14", "Groceries", "Expense", "Groceries", -1200,
                  "Weekly grocery shopping"),
                 ("2024-03-10", "Electricity Bill", "Expense", "Utilities", -900,
                   "Monthly electricity bill"),
-                ("2024-04-05", "Health Insurance", "Expense", "Health", -2000, 
+                ("2024-04-05", "Health Insurance", "Expense", "Health", -2000,
                  "Monthly health insurance payment"),
-                ("2024-05-20", "Petrol", "Expense", "Petrol/Diesel", -800, 
+                ("2024-05-20", "Petrol", "Expense", "Petrol/Diesel", -800,
                  "Fuel for the car"),
-                ("2024-06-15", "Freelance Work", "Income", "Side Hustle", 3000, 
+                ("2024-06-15", "Freelance Work", "Income", "Side Hustle", 3000,
                  "Completed a graphic design project"),
-                ("2024-07-01", "Rent", "Expense", "Housing", -7500, 
+                ("2024-07-01", "Rent", "Expense", "Housing", -7500,
                  "Monthly apartment rent"),
-                ("2024-08-10", "Clothing", "Expense", "Clothing", -1800, 
+                ("2024-08-10", "Clothing", "Expense", "Clothing", -1800,
                  "Bought new work outfits"),
                 ("2024-09-25", "Savings Deposit", "Expense", "Savings", -5000,
                   "Transferred to savings account"),
-                ("2024-10-12", "Internet Bill", "Expense", 
-                 "Cellphone and Internet", -700, 
+                ("2024-10-12", "Internet Bill", "Expense",
+                 "Cellphone and Internet", -700,
                  "Monthly internet subscription"),
-                ("2024-11-15", "Car Insurance", "Expense", "Insurance", -1200, 
+                ("2024-11-15", "Car Insurance", "Expense", "Insurance", -1200,
                  "Quarterly car insurance payment"),
-                ("2024-12-24", "Groceries", "Expense", "Groceries", -1400, 
+                ("2024-12-24", "Groceries", "Expense", "Groceries", -1400,
                  "Christmas grocery shopping"),
-                ("2024-01-20", "Phone Plan", "Expense", 
+                ("2024-01-20", "Phone Plan", "Expense",
                  "Cellphone and Internet",  -500, "Monthly cellphone plan"),
-                ("2024-03-30", "Public Transport", "Expense", "Transportation", 
+                ("2024-03-30", "Public Transport", "Expense", "Transportation",
                  -150, "Bus tickets for the month"),
                 ("2024-04-15", "Medical Checkup", "Expense", "Health",
                   -600, "Annual health checkup"),
                 ("2024-06-25", "Petrol", "Expense", "Petrol/Diesel",
                   -900, "Filled up the tank"),
-                ("2024-09-05", "Salary", "Income", "Main Job", 
+                ("2024-09-05", "Salary", "Income", "Main Job",
                  15000, "September salary from main job"),
-                ("2024-10-30", "Utilities", "Expense", "Utilities", 
+                ("2024-10-30", "Utilities", "Expense", "Utilities",
                  -1000, "Monthly water and electricity bill"),
                 ("2024-11-18", "Groceries", "Expense", "Groceries",
                   -1100, "Weekly grocery shopping"),
-                ("2024-12-10", "Side Gig", "Income", "Side Hustle", 
+                ("2024-12-10", "Side Gig", "Income", "Side Hustle",
                  4000, "Income from tutoring students"),
-                 ("2024-12-12", "Home Loan", "Expense", "Debts", 
+                 ("2024-12-12", "Home Loan", "Expense", "Debts",
                  -4000, "320 Home Loan"),
                     ]
                   
@@ -160,8 +160,8 @@ class menuSelection():
 
         """Validates if the input_date is in 'YYYY-MM-DD' format."""
 
-        try: 
-            entry_date = datetime.strptime(input_date, "%Y-%m-%d")
+        try:
+            entry_date  =  datetime.strptime(input_date, "%Y-%m-%d")
           
 
             return True
@@ -169,15 +169,13 @@ class menuSelection():
             print("Incorrect date entry. Please try again")
             
             return False
-        
-            
-    
+  
     def loading_screen(self):
         for i in tqdm(range(5)):
             time.sleep(0.2)
 
     def clear_screen(self):
-        if os.name == "nt":
+        if os.name  =  =  "nt":
             os.system("cls")
         else:
             os.system("clear")
@@ -188,15 +186,14 @@ class menuSelection():
         ORDER BY Category_Name ASC
         ''')
 
-        db_category_list = self.cursor.fetchall()
+        db_category_list  =  self.cursor.fetchall()
 
         return db_category_list
-
 
     def menu_selection(self):
         time.sleep(2)
 
-        menu_dictionary = {
+        menu_dictionary  =  {
             1: self.add_expense,
             2: self.view_expenses,
             3: self.view_expenses_by_category,
@@ -212,112 +209,110 @@ class menuSelection():
             13: self.delete_account
             }  # dictionary holding all the functions from the menu
 
-        while True:  # ensuring user choses an option thats possible 
+        while True:  # ensuring user choses an option thats possible
 
             try:
-                menu_num_selection = int(input('''
+                menu_num_selection  =  int(input('''
                     1.Add expense
-                    2.View expenses 
-                    3.View expenses by category 
+                    2.View expenses
+                    3.View expenses by category
                     4.Add income
                     5.View income
-                    6.View income by category 
+                    6.View income by category
                     7.Add a category
                     8.Delete a category
-                    9.Set budget for a category 
-                    10.View budget for category 
+                    9.Set budget for a category
+                    10.View budget for category
                     11.View progress towards financial goals
-                    12.Quit 
+                    12.Quit
                     13.Delete Account
-                    >> '''
-                 ))
+                    >> '''))
                 
                 if menu_num_selection > len(menu_dictionary) or menu_num_selection < 1:
                     print("Incorrect option selection")
-                else: 
+                else:
                     break
-            except ValueError: 
+            except ValueError:
                 print("You have not entered a correct value")
 
         menu_dictionary[menu_num_selection]()
 
     def create_table(self, rows):
-        # creating neater output. Need to create it so that it works everytime when displaying the db too 
+        # creating neater output. Need to create it so that it works everytime when displaying the db too
         self.loading_screen()
         self.clear_screen()
    
-        headers = ["Date", "Desciption", "Type", "Category", "Amount(R)", "Comments"]
+        headers  =  ["Date", "Desciption", "Type", "Category", "Amount(R)", "Comments"]
 
-        table = tabulate(zip(headers,rows), headers= ["Information", "Your Input"], tablefmt = "fancy_grid")
+        table  =  tabulate(zip(headers, rows), headers = ["Information", "Your Input"], tablefmt = "fancy_grid")
         print(table)
 
-
-    def create_table_with_own_headers(self,headers, rows):
-        # neater output 
+    def create_table_with_own_headers(self, headers, rows):
+        # neater output
         self.loading_screen()
         self.clear_screen()
-        table = tabulate(rows, headers= headers, tablefmt = "fancy_grid")
+        table  =  tabulate(rows, headers = headers, tablefmt = "fancy_grid")
         print(table)
 
     def add_expense(self):
         while True:
             while True:
-                temp_date = input('''Please enter the date of the transaction ie yyyy-mm-dd: >>''')
-                is_date_correct = self.date_validation(temp_date)
-                if is_date_correct: 
+                temp_date  =  input('''Please enter the date of the transaction ie yyyy-mm-dd: >>''')
+                is_date_correct  =  self.date_validation(temp_date)
+                if is_date_correct:
                     break
             
-            temp_description = input('''Please give the transaction a name: >>''')
+            temp_description  =  input('''Please give the transaction a name: >>''')
 
-            temp_type = 'Expense'
+            temp_type  =  'Expense'
 
-            db_category_list = self.print_category_list()
+            db_category_list  =  self.print_category_list()
          
             while True:
-                for index, value in enumerate(db_category_list,start=1):
+                for index, value in enumerate(db_category_list,start = 1):
                     print(f"{index}. {value[0]}")
 
-                try: 
-                    category_selection = int(input("Please select a category ie 3: "))
+                try:
+                    category_selection  =  int(input("Please select a category ie 3: "))
 
-                    if(category_selection > len(db_category_list)) or category_selection < 1:
+                    if (category_selection > len(db_category_list)) or category_selection < 1:
                         print("Incorrect category selection please try again")
                     else:
-                        break 
+                        break
 
                 except ValueError:
                     print("You have chosen the incorrect option")
 
-            selected_category = db_category_list[category_selection-1]
+            selected_category  =  db_category_list[category_selection-1]
 
-            temp_amount = float(input('''How much was spent ie R120.05? >> -R'''))*-1
+            temp_amount  =  float(input('''How much was spent ie R120.05? >> -R'''))*-1
             
-            temp_comments = input('''Please enter any comments you have about this transaction: >>''')
+            temp_comments  =  input('''Please enter any comments you have about this transaction: >>''')
 
-            # creating table for better visibility 
+            # creating table for better visibility
             
-            rows = [temp_date, temp_description,temp_type,selected_category[0],temp_amount,temp_comments]
+            rows  =  [temp_date, temp_description, temp_type, selected_category[0], temp_amount, temp_comments]
             self.create_table(rows)
 
             while True:
-                correct_info = input("Please confirm if the following is correct[Y/n]:").lower()
+                correct_info  =  input("Please confirm if the following is correct[Y/n]:").lower()
                 print(f'Your response: {correct_info}')
-                if correct_info != 'y' and correct_info != 'n':
+                if correct_info ! =  'y' and correct_info ! =  'n':
                     self.create_table(rows)
-                    print(f'Your response: {correct_info}')    
-                elif correct_info == 'y':
+                    print(f'Your response: {correct_info}')
+                elif correct_info  =  =  'y':
                     print("Input Valid!")
                 
                     '''adding entry into database'''
                     self.cursor.execute('''
-                        INSERT INTO budgettracker (Date, Description,Type, Category,Amount,Comments)
+                        INSERT INTO budgettracker (Date, Description,Type, Category, Amount,Comments)
                             VALUES(?,?,?,?,?,?)''', rows)
                     self.db.commit()
                     
                     break
-                elif correct_info == 'n':
+                elif correct_info  =  =  'n':
                     self.menu_selection()
-                else: 
+                else:
                     print("Incorrect input! Please re-enter... ")
             break
 
@@ -328,106 +323,101 @@ class menuSelection():
     def view_expenses(self):
        
         self.cursor.execute('''
-            SELECT * 
+            SELECT *
             FROM budgettracker
-            WHERE Type = 'Expense'
+            WHERE Type  =  'Expense'
             ORDER BY Date
             ''')
-        list_expenses = self.cursor.fetchall()
+        list_expenses  =  self.cursor.fetchall()
 
-        headers = ["Date", "Desciption", "Type","Category", "Amount(R)", 
-            "Comments"]
+        headers  =  ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
         
-        self.create_table_with_own_headers(headers ,list_expenses)
+        self.create_table_with_own_headers(headers, list_expenses)
         time.sleep(2)
         self.menu_selection()
 
     def view_expenses_by_category(self):
-        db_category_list = self.print_category_list()
+        db_category_list  =  self.print_category_list()
       
         while True:
-                for index, value in enumerate(db_category_list, start=1):
-                    print(f"{index}. {value[0]}")
+            for index, value in enumerate(db_category_list, start = 1):
+                print(f"{index}. {value[0]}")
 
-                try: 
-                    category_selection = int(input("Please select a category to view ie 3: "))
+            try:
+                category_selection  =  int(input("Please select a category to view ie 3: "))
 
-                    if(category_selection > len(db_category_list)) or category_selection < 1:
-                        print("Incorrect category selection please try again")
-                    else:
-                        break 
+                if (category_selection > len(db_category_list)) or category_selection < 1:
+                    print("Incorrect category selection please try again")
+                else:
+                    break
 
-                except ValueError:
-                    print("You have chosen the incorrect option")
+            except ValueError:
+                print("You have chosen the incorrect option")
+
         self.cursor.execute('''
-            SELECT * 
+            SELECT *
             FROM budgettracker
-            WHERE Category = ? AND Type = 'Expense'
+            WHERE Category  =  ? AND Type  =  'Expense'
             ORDER BY Date ASC
             ''', db_category_list[category_selection-1] )
         
-        list_incomes = self.cursor.fetchall()
+        list_incomes  =  self.cursor.fetchall()
        
-        headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
+        headers  =  ["Date", "Desciption", "Type", "Category", "Amount(R)", "Comments"]
        
-        self.create_table_with_own_headers(headers,list_incomes)
+        self.create_table_with_own_headers(headers, list_incomes)
         time.sleep(2)
         self.menu_selection()
-
-
 
     def add_income(self):
         while True:
                 
             while True:
-                temp_date = input('''Please enter the date of the transaction ie yyyy-mm-dd: >>''')
-                is_date_correct = self.date_validation(temp_date)
+                temp_date  =  input('''Please enter the date of the transaction ie yyyy-mm-dd: >>''')
+                is_date_correct  =  self.date_validation(temp_date)
 
-                if is_date_correct: 
+                if is_date_correct:
                     break
             
-            temp_description = input('Please give the transaction a name: >>')
+            temp_description  =  input('Please give the transaction a name: >>')
 
-            temp_type = 'Income'
+            temp_type  =  'Income'
 
-            db_category_list = self.print_category_list()
+            db_category_list  =  self.print_category_list()
          
             while True:
-                for index, value in enumerate(db_category_list,start=1):
+                for index, value in enumerate(db_category_list, start = 1):
                     print(f"{index}. {value[0]}")
 
-                try: 
-                    category_selection = int(input("Please select a category ie 3: "))
+                try:
+                    category_selection  =  int(input("Please select a category ie 3: "))
 
-                    if(category_selection > len(db_category_list)) or category_selection < 1:
+                    if (category_selection > len(db_category_list)) or category_selection < 1:
                         print("Incorrect category selection please try again")
                     else:
-                        break 
+                        break
 
                 except ValueError:
                     print("You have chosen the incorrect option")
 
-            selected_category  = db_category_list[category_selection-1]
+            selected_category   =  db_category_list[category_selection-1]
 
-
-            temp_amount = float(input('How much was recieved ie R120.05? >> R'))
+            temp_amount  =  float(input('How much was recieved ie R120.05? >> R'))
                  
-            temp_comments = input('Please enter any comments you have about this transaction: >>')
+            temp_comments  =  input('Please enter any comments you have about this transaction: >>')
 
             # creating table for better visibility 
-            rows = [temp_date, temp_description,temp_type, selected_category[0],temp_amount,temp_comments]
+            rows  =  [temp_date, temp_description, temp_type, selected_category[0], temp_amount, temp_comments]
             self.create_table(rows)
-
-    
 
             # validating if the details entered are correct
             while True:
-                correct_info = input("Please confirm if the following is correct[Y/n]:").lower()
+                correct_info  =  input("Please confirm if the following is correct[Y/n]:").lower()
                 print(f'Your response: {correct_info}')
-                if correct_info != 'y' and correct_info != 'n':
+                if correct_info ! =  'y' and correct_info ! =  'n':
                     self.create_table(rows)
-                    print(f'Your response: {correct_info}')    
-                elif correct_info == 'y':
+                    print(f'Your response: {correct_info}')
+                elif correct_info  =  =  'y':
                     print("Input Valid!")
                 
                     '''adding entry into database'''
@@ -437,7 +427,7 @@ class menuSelection():
                     self.db.commit()
                     
                     break
-                elif correct_info == 'n':
+                elif correct_info  =  =  'n':
                     self.menu_selection()
                 else: 
                     print("Incorrect input! Please re-enter... ")
@@ -446,46 +436,46 @@ class menuSelection():
 
     def view_income(self):
         self.cursor.execute('''
-                            SELECT * 
+                            SELECT *
                             FROM budgettracker
-                            WHERE Type = 'Income'
+                            WHERE Type  =  'Income'
                             ORDER BY Date
                             ''')
-        list_income = self.cursor.fetchall()
-        headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
-        self.create_table_with_own_headers(headers,list_income)
+        list_income  =  self.cursor.fetchall()
+        headers  =  ["Date", "Desciption", "Type", "Category", "Amount(R)", "Comments"]
+        self.create_table_with_own_headers(headers, list_income)
         time.sleep(2)
         self.menu_selection()
     
     def view_income_by_category(self):
 
-        db_category_list = self.print_category_list()
+        db_category_list  =  self.print_category_list()
       
         while True:
-                for index, value in enumerate(db_category_list, start=1):
-                    print(f"{index}. {value[0]}")
+            for index, value in enumerate(db_category_list, start = 1):
+                print(f"{index}. {value[0]}")
 
-                try: 
-                    category_selection = int(input("Please select a category to view ie 3: "))
+            try:
+                category_selection  =  int(input("Please select a category to view ie 3: "))
 
-                    if(category_selection > len(db_category_list)) or category_selection < 1:
-                        print("Incorrect category selection please try again")
-                    else:
-                        break 
+                if (category_selection > len(db_category_list)) or category_selection < 1:
+                    print("Incorrect category selection please try again")
+                else:
+                    break
 
-                except ValueError:
-                    print("You have chosen the incorrect option")
+            except ValueError:
+                print("You have chosen the incorrect option")
  
         self.cursor.execute('''
-            SELECT * 
+            SELECT *
             FROM budgettracker
-            WHERE Category = ? AND Type = 'Income'
+            WHERE Category  =  ? AND Type  =  'Income'
             ORDER BY Date
             ''', db_category_list[category_selection-1] )
         
-        list_incomes = self.cursor.fetchall()
+        list_incomes  =  self.cursor.fetchall()
 
-        headers = ["Date", "Desciption", "Type","Category", "Amount(R)", "Comments"]
+        headers  =  ["Date", "Desciption", "Type", "Category", "Amount(R)", "Comments"]
        
         self.create_table_with_own_headers(headers,list_incomes)
         time.sleep(2)
@@ -494,21 +484,21 @@ class menuSelection():
     def add_a_category(self):
 
         while True:
-            db_category_list = self.print_category_list()
+            db_category_list  =  self.print_category_list()
 
-            print("==Current Categories==")
+            print(" =  = Current Categories =  = ")
 
-            for index, value in enumerate(db_category_list, start =1):
+            for index, value in enumerate(db_category_list, start  = 1):
                 print(f"{index}. {value[0]}")
    
-            new_category = input("Please enter a new category: >> ")
+            new_category  =  input("Please enter a new category: >> ")
         
-            for  i in db_category_list:
-                if new_category.lower() == i[0].lower():
+            for i in db_category_list:
+                if new_category.lower()  =  =  i[0].lower():
                     print("That category already exisits. ")
                     self.menu_selection()
-            else:       
-                budget = int(input(f"What is the monthly budget for {new_category.capitalize()}:>> R"))     
+            else:
+                budget  =  int(input(f"What is the monthly budget for {new_category.capitalize()}:>> R"))
                 self.cursor.execute('''
                     INSERT OR IGNORE INTO category(Category_Name, Budget)
                     VALUES (?,?)
@@ -520,14 +510,14 @@ class menuSelection():
             self.menu_selection()
 
     def delete_a_category(self):
-        db_category_list = self.print_category_list()
+        db_category_list  =  self.print_category_list()
 
-        for i, value in enumerate(db_category_list, start=1):
+        for i, value in enumerate(db_category_list, start = 1):
             print(f"{i}. {value[0]}")
 
         while True:
-            try: 
-                del_category_selection = int(input("Which category do you want to delete ie. 2: >> "))
+            try:
+                del_category_selection  =  int(input("Which category do you want to delete ie. 2: >> "))
 
                 if del_category_selection > len(db_category_list) or del_category_selection < 1:
                     print("Incorrect selection")
@@ -538,45 +528,45 @@ class menuSelection():
         
         print(db_category_list[del_category_selection-1][0])
 
-        self.cursor.execute(''' 
+        self.cursor.execute('''
             DELETE FROM category
-            WHERE Category_Name = ?
+            WHERE Category_Name  =  ?
                             ''', (db_category_list[del_category_selection-1][0],))
         self.db.commit()
 
-    def set_budget_for_a_category(self):  
+    def set_budget_for_a_category(self):
         while True:
-            try: 
-                budget_option_1 = int(input(
+            try:
+                budget_option_1  =  int(input(
                     '''Would you like to:
                     1. Set budget for all your categories
                     2. Set budget for a specifc category
                         >>'''))
                 
-                if budget_option_1 == 1:
+                if budget_option_1  ==  1:
                     self.cursor.execute('''SELECT Category_Name, Budget FROM category''')
-                    categories_and_budget = self.cursor.fetchall()
+                    categories_and_budget  =  self.cursor.fetchall()
                   
                     for i in range(len(categories_and_budget)):
                         print(f"Category: {categories_and_budget[i][0]} Current Budget: R{categories_and_budget[i][1]}")
 
-                        table = tabulate([categories_and_budget[i]],
-                                        headers = ["Category",
+                        table  =  tabulate([categories_and_budget[i]],
+                                        headers  =  ["Category",
                                         "Current Budget"],
-                                        tablefmt="fancy_grid")
+                                        tablefmt = "fancy_grid")
                         print(table)
                         while True:
                             try:
-                                new_budget_amount = int(input(">>Please enter a new budget amount: R"))
-                                if new_budget_amount < 0: 
-                                    new_budget_amount   = new_budget_amount * -1
+                                new_budget_amount  =  int(input(">>Please enter a new budget amount: R"))
+                                if new_budget_amount < 0:
+                                    new_budget_amount    =  new_budget_amount * -1
                                 break
                             except ValueError:
                                 print("Please try again.")
 
                         self.cursor.execute('''
-                                UPDATE category 
-                                SET Budget = ?
+                                UPDATE category
+                                SET Budget  =  ?
                                 WHERE Category_Name = ?
                                     ''', (new_budget_amount, categories_and_budget[i][0]))
                         self.db.commit()
@@ -589,8 +579,8 @@ class menuSelection():
                         self.cursor.execute('''SELECT Category_Name, Budget FROM category''')
                         categories_and_budget = self.cursor.fetchall()
                 
-                        table = tabulate(categories_and_budget, 
-                        headers = ["Category Name", "Budget"], tablefmt= 
+                        table = tabulate(categories_and_budget,
+                        headers = ["Category Name", "Budget"], tablefmt =
                         "fancy_grid", showindex=range(1, len(categories_and_budget)+1))
                         print(table)
                     
@@ -600,7 +590,7 @@ class menuSelection():
 
                                 if set_selection > len(categories_and_budget) or set_selection < 1:
                                     print("Incorrect value chosen")
-                                else: 
+                                else:
                                     try:
                                         new_budget_amount = float(input("Please enter a new budget amount: >>R "))
                                         break
@@ -611,9 +601,9 @@ class menuSelection():
                         
                         print(f"{categories_and_budget[set_selection-1][0]} new budget is R{new_budget_amount}")
 
-                        self.cursor.execute(''' 
-                            UPDATE category 
-                            SET Budget = ? 
+                        self.cursor.execute('''
+                            UPDATE category
+                            SET Budget = ?
                             WHERE Category_Name = ?''', (new_budget_amount,categories_and_budget[set_selection-1][0]))
                         self.db.commit()
                         self.menu_selection()
@@ -648,40 +638,39 @@ class menuSelection():
                         headers = ["Category", "Budget"], tablefmt="fancy_grid" )
         print(table)
 
-        self.menu_selection()      
+        self.menu_selection()
 
     def view_progress_towards_financial_goals(self):
     
 
         '''
-        comparing budget amount  to goal amount if there is a link 
-        displaying non linked budget amounts 
+        comparing budget amount  to goal amount if there is a link
+        displaying non linked budget amounts
         '''
 
-        # summed up amounts 
+        # summed up amounts
         self.cursor.execute('''SELECT abs(sum(Amount))
                             FROM budgettracker
                             GROUP BY Category
-                            ORDER BY Category ASC 
+                            ORDER BY Category ASC
         ''')
 
         actuals = self.cursor.fetchall()
-     
 
         # category headers
         self.cursor.execute('''SELECT Category
                             FROM budgettracker
                             GROUP BY Category
-                            ORDER BY Category ASC 
+                            ORDER BY Category ASC
         ''')
 
         headers = self.cursor.fetchall()
 
         # budgeted anounts
-        self.cursor.execute('''SELECT Budget 
+        self.cursor.execute('''SELECT Budget
                             FROM category
                             GROUP BY Category_Name
-                            ORDER BY Category_Name ASC    
+                            ORDER BY Category_Name ASC
 
                             ''')
         
@@ -758,14 +747,13 @@ class menuSelection():
                 os.remove("budgettracker.db")
                 print("Deleting Complete")
                 exit()
-            else: 
+            else:
                 pass
-        else: 
+        else:
             print("Incorrect option selected. Returning to main menu...")
             self.menu_selection()
-           
+
+                 
 # Code starts here
-
-
 new_year_resolution = menuSelection()
 new_year_resolution.menu_selection()
